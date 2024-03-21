@@ -1,4 +1,4 @@
-# Relation Between Mental to Physical Health
+# Relation Between Mental And Physical Health
 
 ## Overview
 
