@@ -1,4 +1,4 @@
-# Analyizing Mental to Physical Health
+# Analyzing Mental to Physical Health
 
 ## Overview
 
