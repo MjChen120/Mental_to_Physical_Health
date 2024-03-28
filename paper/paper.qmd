@@ -48,8 +48,9 @@ For the analysis, we retrieved the following data as described in @tbl-use-var.
 
 | Variable | New Name   | Description                     | Example |
 |----------|------------|---------------------------------|---------|
-| sex      | sex        | Respondent's gender             |2(FEMALE)|
-| HEALTH   | health     | The year of the survey recorded | 2007    |
+| sex      | sex        | Respondent's gender             | Female  |
+| age      | age        | Respondent's age                | 25      |
+| HEALTH   | health     | Respondents' health condition   | Good    |
 | SATHEALT | AGE        | The age of the respondents      | 23      |
 | PHYSHLTH | Phys_Health| Respondents' physical health    | MALE    |
 
