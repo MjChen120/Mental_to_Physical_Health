@@ -39,6 +39,8 @@ You can and should cross-reference sections and sub-sections. We use @citeR and 
 
 The remainder of this paper is structured as follows. @sec-data....
 
+This paper begins with an [Introduction] framing the impact of economic downturns on work hours. It is followed by the [Data] section detailing methodology and cleaning efforts. In the [Results], we analyze work hours and nonresponse rates, leading to the [Discussion] on labour market responses to crises, including the impact of COVID-19, and addressing ethical issues. We later acknowledge our paper's Limitations, suggest paths for Future Research, especially on enhancing response rates, and conclude with a synthesis of our insights. The [Appendix] provides further survey information.
+
 
 # Data {#sec-data}
 
@@ -48,8 +50,8 @@ For the analysis, we retrieved the following data as described in @tbl-use-var.
 
 | Variable | New Name  | Description                   | Example |
 |----------|-----------|-------------------------------|---------|
-| sex      | sex       | Respondent's gender           | Female  |
-| age      | age       | Respondent's age              | 25      |
+| sex      | SEX       | Respondent's gender           | Female  |
+| age      | AGE       | Respondent's age              | 25      |
 | HEALTH   | health    | Respondents' health condition | Good    |
 | PHYSHLTH | phys_days | Days of Respondents' physical health being not good   | 15      |
 | MNTLHLTH | ment_days | Days of Respondents' mental health being not good     | 20      |
@@ -60,10 +62,13 @@ For the analysis, we retrieved the following data as described in @tbl-use-var.
 
 
 ## Source Data
+The data was downloaded and filtered for the selected variables from the selected data variables from GSS[^1]. The data cleaning was performed based on value definitions as defined in the GSS codebooks [@gssCodebook]. One of the variable names `response` is renamed to be more informative (@tbl-use-var).
 
+The data was cleaned by using the open source statistically programming language R [@citeR], with libraries `tidyverse` [@tidyverse], `ggplot2` [@ggplot2], `dplyr` [@dplyr], `readr` [@readr], `tibble` [@tibble], `here` [@here], `kableExtra` [@kableExtra], `janitor` [@janitor], and `knitr` [@knitr].
+
+[^1]: https://gss.norc.org/documents/stata/GSS_stata.zip
 
 # Model
-
 The goal of our modelling strategy is twofold. Firstly,...
 
 Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
