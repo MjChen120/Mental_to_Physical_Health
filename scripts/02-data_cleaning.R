@@ -1,44 +1,64 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 6 April 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Cleans the raw data recorded by U.S.General Social Survey (GSS)
+# Author: Mingjia Chen
+# Date: 28 March 2024
+# Contact: mingjia.chen@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: Have to manually download the data from the raw data folder.
+# Any other information needed? -
 
 #### Workspace setup ####
 library(tidyverse)
+library(arrow)
+
+#### Load data ####
+# This part of the code is from GSS Open Explore
+
+# When downloading the dataset from the website, the R script can be chosen to
+# be downloaded as well.
+
+#After running this part of the code, the data will be available for modifying
+# and analyzing.
+
+library(foreign)
+read.dct <- function(dct, labels.included = "yes") {
+  temp <- readLines(dct)
+  temp <- temp[grepl("_column", temp)]
+  switch(labels.included,
+         yes = {
+           pattern <- "_column\\(([0-9]+)\\)\\s+([a-z0-9]+)\\s+(.*)\\s+%([0-9]+)[a-z]\\s+(.*)"
+           classes <- c("numeric", "character", "character", "numeric", "character")
+           N <- 5
+           NAMES <- c("StartPos", "Str", "ColName", "ColWidth", "ColLabel")
+         },
+         no = {
+           pattern <- "_column\\(([0-9]+)\\)\\s+([a-z0-9]+)\\s+(.*)\\s+%([0-9]+).*"
+           classes <- c("numeric", "character", "character", "numeric")
+           N <- 4
+           NAMES <- c("StartPos", "Str", "ColName", "ColWidth")
+         })
+  temp_metadata <- setNames(lapply(1:N, function(x) {
+    out <- gsub(pattern, paste("\\", x, sep = ""), temp)
+    out <- gsub("^\\s+|\\s+$", "", out)
+    out <- gsub('\"', "", out, fixed = TRUE)
+    class(out) <- classes[x] ; out }), NAMES)
+  temp_metadata[["ColName"]] <- make.names(gsub("\\s", "", temp_metadata[["ColName"]]))
+  temp_metadata
+}
+
+read.dat <- function(dat, metadata_var, labels.included = "yes") {
+  read.table(dat, col.names = metadata_var[["ColName"]])
+}
+
+GSS_metadata <- read.dct(here::here("data/raw_data/GSS.dct"))
+GSS_ascii <- read.dat(here::here("data/raw_data/GSS.dat"), GSS_metadata)
+attr(GSS_ascii, "col.label") <- GSS_metadata[["ColLabel"]]
+GSS <- GSS_ascii
+
 
 #### Clean data ####
-raw_data <- read_csv("inputs/data/plane_data.csv")
+# Actual Data cleaning
 
-cleaned_data <-
-  raw_data |>
-  janitor::clean_names() |>
-  select(wing_width_mm, wing_length_mm, flying_time_sec_first_timer) |>
-  filter(wing_width_mm != "caw") |>
-  mutate(
-    flying_time_sec_first_timer = if_else(flying_time_sec_first_timer == "1,35",
-                                   "1.35",
-                                   flying_time_sec_first_timer)
-  ) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "490",
-                                 "49",
-                                 wing_width_mm)) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "6",
-                                 "60",
-                                 wing_width_mm)) |>
-  mutate(
-    wing_width_mm = as.numeric(wing_width_mm),
-    wing_length_mm = as.numeric(wing_length_mm),
-    flying_time_sec_first_timer = as.numeric(flying_time_sec_first_timer)
-  ) |>
-  rename(flying_time = flying_time_sec_first_timer,
-         width = wing_width_mm,
-         length = wing_length_mm
-         ) |> 
-  tidyr::drop_na()
 
 #### Save data ####
-write_csv(cleaned_data, "outputs/data/analysis_data.csv")
+write_parquet(GSS, here::here("data/analysis_data/cleaned_GSS.parquet"))
