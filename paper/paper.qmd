@@ -46,14 +46,14 @@ The paper uses data collected from the US General Social Survey (GSS) from NORIC
 
 For the analysis, we retrieved the following data as described in @tbl-use-var.
 
-| Variable | New Name   | Description                     | Example |
-|----------|------------|---------------------------------|---------|
-| sex      | sex        | Respondent's gender             | Female  |
-| age      | age        | Respondent's age                | 25      |
-| HEALTH   | health     | Respondents' health condition   | Good    |
-| SATHEALT | AGE        | The age of the respondents      | 23      |
-| PHYSHLTH | Phys_Health| Days of Respondents' physical health being not good   | 15    |
-| MNTLHLTH | Ment_Health| Respondents' mental health      | MALE    |
+| Variable | New Name  | Description                   | Example |
+|----------|-----------|-------------------------------|---------|
+| sex      | sex       | Respondent's gender           | Female  |
+| age      | age       | Respondent's age              | 25      |
+| HEALTH   | health    | Respondents' health condition | Good    |
+| PHYSHLTH | phys_days | Days of Respondents' physical health being not good   | 15      |
+| MNTLHLTH | ment_days | Days of Respondents' mental health being not good     | 20      |
+| DEPRESS  | depress   | Whether respondents have been told having depression  | Yes     |
 
 
 : Source data retrieved from GSS {#tbl-use-var}
