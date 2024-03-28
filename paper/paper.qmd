@@ -52,7 +52,8 @@ For the analysis, we retrieved the following data as described in @tbl-use-var.
 | age      | age        | Respondent's age                | 25      |
 | HEALTH   | health     | Respondents' health condition   | Good    |
 | SATHEALT | AGE        | The age of the respondents      | 23      |
-| PHYSHLTH | Phys_Health| Respondents' physical health    | MALE    |
+| PHYSHLTH | Phys_Health| Days of Respondents' physical health being not good   | 15    |
+| MNTLHLTH | Ment_Health| Respondents' mental health      | MALE    |
 
 
 : Source data retrieved from GSS {#tbl-use-var}
