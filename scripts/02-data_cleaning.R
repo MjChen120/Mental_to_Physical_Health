@@ -100,8 +100,8 @@ days_data <- select(days_data,c("id","phys_days","ment_days"))
 
 # 3. Dataset for the relationship between whether diagnozed as having depression 
 # and Number of days of Physical un-wellness
-depress_data <- filter(GSS, phys_days >= 0) %>% filter(depress >= 0)
-depress_data <- select(depress_data,c("id","phys_days","depress"))
+analysis_data <- filter(GSS, phys_days >= 0) %>% filter(depress >= 0) %>% filter(ment_days >= 0)
+analysis_data <- select(analysis_data,c("id","phys_days","ment_days","depress"))
 
 # 4. Dataset for the relationship between Numbers of days of Mental un-wellness
 # and one's health status in general
@@ -112,5 +112,5 @@ mentalVsHealth_data  <- select(mentalVsHealth_data,c("id","ment_days","health"))
 write_parquet(GSS, here::here("data/analysis_data/cleaned_GSS.parquet"))
 write_parquet(demo_data, here::here("data/analysis_data/demo_data.parquet"))
 write_parquet(days_data, here::here("data/analysis_data/days_data.parquet"))
-write_parquet(depress_data, here::here("data/analysis_data/depress_data.parquet"))
+write_parquet(analysis_data, here::here("data/analysis_data/analysis_data.parquet"))
 write_parquet(mentalVsHealth_data, here::here("data/analysis_data/mentalVsHealth_data.parquet"))

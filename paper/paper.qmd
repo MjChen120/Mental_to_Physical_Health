@@ -79,23 +79,63 @@ The data was cleaned by using the open source statistically programming language
 
 [^1]: https://gss.norc.org/documents/stata/GSS_stata.zip
 
-```{r}
-#| label: tbl-data-overview
-#| tbl-cap: Overview of the Categorized Data 
-#| echo: false
-#| warning: false
-#| message: false
 
-kable(demo_data,row.names = FALSE)|>
-  kable_styling() |>
-  row_spec(6, hline_after = TRUE)
-```
 
 ## Survey Methodology
 
 some words
 
 ## Demographic Variables 
+```{r}
+#| label: tbl-data-overview
+#| tbl-cap: Overview of the Demographic Data 
+#| echo: false
+#| warning: false
+#| message: false
+
+vars <- c("ID","Gender","Age","Physical Unwellness","Mental Unwellness","Age Cohort")
+
+kable(head(demo_data), 
+      caption = "Counted days of Physical and Mental unwellness of Population by Age and Gender Group", 
+      align = "c",
+      col.names = vars,
+      row.names = FALSE) |>
+  kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
+```
+
+## Demographic Variables 
+
+# Model
+The goal of our modelling strategy is twofold. Firstly,...
+
+Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
+
+## Model set-up
+
+Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
+
+\begin{align} 
+y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
+\mu_i &= \alpha + \beta_i + \gamma_i\\
+\alpha &\sim \mbox{Normal}(0, 2.5) \\
+\beta &\sim \mbox{Normal}(0, 2.5) \\
+\gamma &\sim \mbox{Normal}(0, 2.5) \\
+\sigma &\sim \mbox{Exponential}(1)
+\end{align}
+
+We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
+
+
+### Model justification
+
+We expect a positive relationship between the size of the wings and time spent aloft. In particular...
+
+We can use maths by including latex between dollar signs, for instance $\theta$.
+
+
+# Results {#sec-results}
+
+Our results are summarized in @tbl-modelresults.
 
 ```{r}
 #| echo: false
@@ -156,7 +196,7 @@ demo_data |>
 
 ```{r}
 #| label: fig-demo-physical
-#| fig-cap: Gender and Age of People Apprehended Visulization Year-Depended
+#| fig-cap: Gender and Age of People Apprehended Visulization Year-Depended22
 #| fig-subcap: ["Gender","Age cohorts"]
 #| layout-ncol: 2
 #| echo: false
@@ -188,38 +228,6 @@ demo_data |>
 
 ```
 \break
-
-# Model
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-
-# Results {#sec-results}
-
-Our results are summarized in @tbl-modelresults.
 
 # Discussion {#sec-discussion}
 
