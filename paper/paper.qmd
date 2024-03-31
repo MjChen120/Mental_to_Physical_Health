@@ -2,8 +2,7 @@
 title: "My title"
 subtitle: "My subtitle if needed"
 author: 
-  - First author
-  - Another author
+  - Mingjia Chen
 thanks: "Code and data are available at: LINK."
 date: today
 date-format: long
@@ -21,7 +20,7 @@ bibliography: references.bib
 
 #download the packages if necessary, then load the packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(janitor,here,dplyr,tidyverse,knitr,kableExtra,ggplot2)
+pacman::p_load(janitor,here,dplyr,tidyverse,knitr,kableExtra,ggplot2,arrow)
 
 library(janitor)
 library(tidyverse)
@@ -30,6 +29,15 @@ library(dplyr)
 library(kableExtra)
 library(here)
 library(ggplot2)
+library(arrow)
+
+
+#### Load data ####
+GSS <- read_parquet(here::here("data/analysis_data/cleaned_GSS.parquet"))
+demo_data <- read_parquet(here::here("data/analysis_data/demo_data.parquet"))
+days_data <- read_parquet(here::here("data/analysis_data/days_data.parquet"))
+depress_data <- read_parquet(here::here("data/analysis_data/depress_data.parquet"))
+mentalVsHealth <- read_parquet(here::here("data/analysis_data/mentalVsHealth_data.parquet"))
 ```
 
 
@@ -62,6 +70,75 @@ For the analysis, we retrieved the following data as described in @tbl-use-var.
 
 : Source data retrieved from GSS {#tbl-use-var}
 
+```{r}
+#| label: fig-demo-mental
+#| fig-cap: Gender and Age of People Apprehended Visulization Year-Depended
+#| fig-subcap: ["Gender","Age cohorts"]
+#| layout-ncol: 2
+#| echo: false
+#| warning: false
+#| message: false
+
+
+demo_data |>
+  ggplot(aes(x = ment_days, fill = sex)) +
+  geom_histogram(position = "dodge") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Days of Feeling Unwell Mentally in Last 30 days",
+    y = "Occurrences",
+    fill = "Sex"
+  )
+
+demo_data |>
+  ggplot(aes(x = ment_days, fill = age_cohort)) +
+  geom_histogram(position = "dodge") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Days of Feeling Unwell Mentally in Last 30 days",
+    y = "Occurrences",
+    fill = "Age Cohorts"
+  )
+
+```
+\break
+
+```{r}
+#| label: fig-demo-physical
+#| fig-cap: Gender and Age of People Apprehended Visulization Year-Depended
+#| fig-subcap: ["Gender","Age cohorts"]
+#| layout-ncol: 2
+#| echo: false
+#| warning: false
+#| message: false
+
+
+demo_data |>
+  ggplot(aes(x = phys_days, fill = sex)) +
+  geom_histogram(position = "dodge") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Days of Feeling Unwell Physically in Last 30 days",
+    y = "Occurrences",
+    fill = "Sex"
+  )
+
+demo_data |>
+  ggplot(aes(x = phys_days, fill = age_cohort)) +
+  geom_histogram(position = "dodge") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Days of Feeling Unwell Physically in Last 30 days",
+    y = "Occurrences",
+    fill = "Age Cohorts"
+  )
+
+```
+\break
 
 ## Source Data
 The data was downloaded and filtered for the selected variables from the selected data variables from GSS[^1]. The data cleaning was performed based on value definitions as defined in the GSS codebooks [@gssCodebook]. One of the variable names `response` is renamed to be more informative (@tbl-use-var).

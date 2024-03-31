@@ -74,6 +74,26 @@ demo_data <- filter(GSS, ment_days >= 0) %>% filter(phys_days >= 0) %>%
   filter(age >= 1) %>% filter(sex >= 1)
 demo_data <- select(demo_data,c("id","sex","age","phys_days","ment_days"))
 
+# change the sex variables from numbers to strings female and male
+demo_data$sex <- as.character(demo_data$sex)
+demo_data <- mutate(demo_data,
+               sex = case_when(
+                 sex == "1" ~ "Male",
+                 sex == "2" ~ "Female",
+                 TRUE ~ sex
+               )
+            )
+
+#categorize ages into five cohorts 
+#code referenced from https://pubs.wsb.wisc.edu/academics/analytics-using-r-2019/convert-numerical-data-to-categorical.html
+demo_data <- within(demo_data, {   
+  age_cohort <- NA # need to initialize variable
+  age_cohort[age < 20] <- "0-19"
+  age_cohort[age >= 20 & age < 40] <- "20-39"
+  age_cohort[age >= 40 & age < 60] <- "40-59"
+  age_cohort[age >= 60 & age < 80] <- "60-79"
+  age_cohort[age >= 80] <- "80+"
+} )
 # 2. Dataset for the relationship between Numbers of days of Physical and Mental un-wellness
 days_data <- filter(GSS, ment_days >= 0) %>% filter(phys_days >= 0)
 days_data <- select(days_data,c("id","phys_days","ment_days"))
