@@ -50,9 +50,10 @@ For the analysis, we retrieved the following data as described in @tbl-use-var.
 
 | Variable | New Name  | Description                   | Example |
 |----------|-----------|-------------------------------|---------|
-| sex      | SEX       | Respondent's gender           | Female  |
-| age      | AGE       | Respondent's age              | 25      |
+| SEX      | sex       | Respondent's gender           | Female  |
+| AGE      | age       | Respondent's age              | 25      |
 | HEALTH   | health    | Respondents' health condition | Good    |
+| YEAR     | year      | Year of the Data Recorded     | 1977    |
 | PHYSHLTH | phys_days | Days of Respondents' physical health being not good   | 15      |
 | MNTLHLTH | ment_days | Days of Respondents' mental health being not good     | 20      |
 | DEPRESS  | depress   | Whether respondents have been told having depression  | Yes     |

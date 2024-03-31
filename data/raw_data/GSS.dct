@@ -2,13 +2,12 @@
 infile dictionary {
 
 _column(1) 	 numeric 		 BALLOT 		 %20f 		 "ballot used for interview" 
-_column(6) 	 numeric 		 SEX 		 %20f 		 "respondents sex" 
-_column(11) 	 numeric 		 HEALTH 		 %20f 		 "condition of health" 
-_column(16) 	 numeric 		 SATHEALT 		 %20f 		 "health and physical condition" 
+_column(6) 	 numeric 		 AGE 		 %20f 		 "age of respondent" 
+_column(11) 	 numeric 		 SEX 		 %20f 		 "respondents sex" 
+_column(16) 	 numeric 		 HEALTH 		 %20f 		 "condition of health" 
 _column(21) 	 numeric 		 PHYSHLTH 		 %20f 		 "days of poor physical health past 30 days" 
 _column(26) 	 numeric 		 MNTLHLTH 		 %20f 		 "days of poor mental health past 30 days" 
-_column(31) 	 numeric 		 SLPPRBLM 		 %20f 		 "trouble sleeping last 12 months" 
-_column(36) 	 numeric 		 DEPRESS 		 %20f 		 "told have depression" 
-_column(41) 	 numeric 		 YEAR 		 %20f 		 "GSS year for this respondent" 
-_column(46) 	 numeric 		 ID_ 		 %20f 		 "Respondent id number" 
+_column(31) 	 numeric 		 DEPRESS 		 %20f 		 "told have depression" 
+_column(36) 	 numeric 		 YEAR 		 %20f 		 "GSS year for this respondent" 
+_column(41) 	 numeric 		 ID_ 		 %20f 		 "Respondent id number" 
 }

@@ -50,6 +50,7 @@ read.dat <- function(dat, metadata_var, labels.included = "yes") {
   read.table(dat, col.names = metadata_var[["ColName"]])
 }
 
+
 GSS_metadata <- read.dct(here::here("data/raw_data/GSS.dct"))
 GSS_ascii <- read.dat(here::here("data/raw_data/GSS.dat"), GSS_metadata)
 attr(GSS_ascii, "col.label") <- GSS_metadata[["ColLabel"]]
@@ -59,6 +60,8 @@ GSS <- GSS_ascii
 #### Clean data ####
 # Actual Data cleaning
 
+# Select desired variables
+GSS <- select(GSS,c("ID_","YEAR","SEX","AGE","HEALTH","PHYSHLTH","MNTLHLTH","DEPRESS"))
 
 #### Save data ####
 write_parquet(GSS, here::here("data/analysis_data/cleaned_GSS.parquet"))
