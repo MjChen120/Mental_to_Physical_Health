@@ -10,6 +10,7 @@
 #### Workspace setup ####
 library(tidyverse)
 library(arrow)
+library(dplyr)
 
 #### Load data ####
 # This part of the code is from GSS Open Explore
@@ -60,8 +61,35 @@ GSS <- GSS_ascii
 #### Clean data ####
 # Actual Data cleaning
 
-# Select desired variables
+# Select desired variables and rename them for easier access/analyze 
 GSS <- select(GSS,c("ID_","YEAR","SEX","AGE","HEALTH","PHYSHLTH","MNTLHLTH","DEPRESS"))
+colnames(GSS) <- c("id","year","sex","age","health","phys_days","ment_days","depress")
+
+# Since we have non-responses due to the fact that many variables were only collected in
+# certain years, four separate datasets will be used for the paper.
+
+# 1. Dataset for demographic variables
+## Gender, Age, Numbers of days of Physical and Mental un-wellness. 
+demo_data <- filter(GSS, ment_days >= 0)
+demo_data <- select(demo_data,c("id","sex","age","phys_days","ment_days"))
+
+# 2. Dataset for the relationship between Numbers of days of Physical and Mental un-wellness
+days_data <- filter(GSS, ment_days >= 0) %>% filter(phys_days >= 0)
+days_data <- select(days_data,c("id","phys_days","ment_days"))
+
+# 3. Dataset for the relationship between whether diagnozed as having depression 
+# and Number of days of Physical un-wellness
+depress_data <- filter(GSS, phys_days >= 0) %>% filter(depress >= 0)
+depress_data <- select(depress_data,c("id","phys_days","depress"))
+
+# 4. Dataset for the relationship between Numbers of days of Mental un-wellness
+# and one's health status in general
+mentalVsHealth_data <- filter(GSS, ment_days >= 0) %>% filter(health >= 0)
+mentalVsHealth_data  <- select(mentalVsHealth_data,c("id","ment_days","health"))
 
 #### Save data ####
 write_parquet(GSS, here::here("data/analysis_data/cleaned_GSS.parquet"))
+write_parquet(demo_data, here::here("data/analysis_data/demo_data.parquet"))
+write_parquet(days_data, here::here("data/analysis_data/days_data.parquet"))
+write_parquet(depress_data, here::here("data/analysis_data/depress_data.parquet"))
+write_parquet(mentalVsHealth_data, here::here("data/analysis_data/mentalVsHealth_data.parquet"))
