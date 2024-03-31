@@ -120,7 +120,7 @@ Weaknesses and next steps should also be included.
 
 # Appendix 
 
-# Additional data details
+## Additional data details
 
 # Model details {#sec-model-details}
 
