@@ -20,7 +20,7 @@ The repo is structured as:
 
 
 ## GSS Data Access
-Due to licensing and copyright restrictions, only partial raw data from the U.S. General Social Survey is included in this repository. To obtain access to the necessary dataset, a detailed instruction will be included in the `download_data.R` on how the data can be obtained directly from the original source.
+Due to licensing and copyright restrictions, only partial raw data from the U.S. General Social Survey (GSS) is included in this repository. To obtain access to the necessary dataset, a detailed instruction will be included in the `download_data.R` on how the data can be obtained directly from the original source.
 
 ## Statement on LLM usage
 No LLMs were used.
