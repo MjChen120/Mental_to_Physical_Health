@@ -54,6 +54,9 @@ This paper begins with an [Introduction] framing the impact of economic downturn
 
 The paper uses data collected from the US General Social Survey (GSS) from NORIC at the University of Chicago [@GSS]. From the dataset, this paper focuses on the "number of hours worked last week" variable, from the years 1992 to 2022. This longitudinal approach allows us to compare labour dynamics across different economic downturns, including the 1998 Asian Financial Crisis, the 2008 Global Financial Crisis, and the COVID-19 pandemic in 2020.
 
+## Source Data
+The data was downloaded and filtered for the selected variables from the selected data variables from GSS[^1]. The data cleaning was performed based on value definitions as defined in the GSS codebooks [@gssCodebook]. One of the variable names `response` is renamed to be more informative (@tbl-use-var).
+
 For the analysis, we retrieved the following data as described in @tbl-use-var.
 
 | Variable | New Name  | Description                   | Example |
@@ -69,6 +72,52 @@ For the analysis, we retrieved the following data as described in @tbl-use-var.
 
 
 : Source data retrieved from GSS {#tbl-use-var}
+
+## Data Cleaning
+
+The data was cleaned by using the open source statistically programming language R [@citeR], with libraries `tidyverse` [@tidyverse], `ggplot2` [@ggplot2], `dplyr` [@dplyr], `readr` [@readr], `tibble` [@tibble], `here` [@here], `kableExtra` [@kableExtra], `janitor` [@janitor], and `knitr` [@knitr].
+
+[^1]: https://gss.norc.org/documents/stata/GSS_stata.zip
+
+```{r}
+#| label: tbl-data-overview
+#| tbl-cap: Overview of the Categorized Data 
+#| echo: false
+#| warning: false
+#| message: false
+
+kable(demo_data,row.names = FALSE)|>
+  kable_styling() |>
+  row_spec(6, hline_after = TRUE)
+```
+
+## Survey Methodology
+
+some words
+
+## Demographic Variables 
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+#categorize the range of days for visualizing the histogram of demographic variables
+
+demo_data <- within(demo_data, {   
+  ment_range <- NA # need to initialize variable
+  ment_range[ment_days < 10] <- "0-10"
+  ment_range[ment_days >= 10 & ment_days < 20] <- "10-20"
+  ment_range[ment_days >= 20 & ment_days < 30] <- "20-30"
+} )
+
+demo_data <- within(demo_data, {   
+  phys_range <- NA # need to initialize variable
+  phys_range[phys_days < 10] <- "0-10"
+  phys_range[phys_days >= 10 & phys_days < 20] <- "10-20"
+  phys_range[phys_days >= 20 & phys_days < 30] <- "20-30"
+} )
+```
 
 ```{r}
 #| label: fig-demo-mental
@@ -139,13 +188,6 @@ demo_data |>
 
 ```
 \break
-
-## Source Data
-The data was downloaded and filtered for the selected variables from the selected data variables from GSS[^1]. The data cleaning was performed based on value definitions as defined in the GSS codebooks [@gssCodebook]. One of the variable names `response` is renamed to be more informative (@tbl-use-var).
-
-The data was cleaned by using the open source statistically programming language R [@citeR], with libraries `tidyverse` [@tidyverse], `ggplot2` [@ggplot2], `dplyr` [@dplyr], `readr` [@readr], `tibble` [@tibble], `here` [@here], `kableExtra` [@kableExtra], `janitor` [@janitor], and `knitr` [@knitr].
-
-[^1]: https://gss.norc.org/documents/stata/GSS_stata.zip
 
 # Model
 The goal of our modelling strategy is twofold. Firstly,...
