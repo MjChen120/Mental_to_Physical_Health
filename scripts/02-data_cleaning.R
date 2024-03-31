@@ -70,7 +70,8 @@ colnames(GSS) <- c("id","year","sex","age","health","phys_days","ment_days","dep
 
 # 1. Dataset for demographic variables
 ## Gender, Age, Numbers of days of Physical and Mental un-wellness. 
-demo_data <- filter(GSS, ment_days >= 0)
+demo_data <- filter(GSS, ment_days >= 0) %>% filter(phys_days >= 0) %>% 
+  filter(age >= 1) %>% filter(sex >= 1)
 demo_data <- select(demo_data,c("id","sex","age","phys_days","ment_days"))
 
 # 2. Dataset for the relationship between Numbers of days of Physical and Mental un-wellness
