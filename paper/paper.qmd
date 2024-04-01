@@ -36,16 +36,12 @@ library(arrow)
 GSS <- read_parquet(here::here("data/analysis_data/cleaned_GSS.parquet"))
 demo_data <- read_parquet(here::here("data/analysis_data/demo_data.parquet"))
 days_data <- read_parquet(here::here("data/analysis_data/days_data.parquet"))
-depress_data <- read_parquet(here::here("data/analysis_data/depress_data.parquet"))
+analysis_data <- read_parquet(here::here("data/analysis_data/analysis_data.parquet"))
 mentalVsHealth <- read_parquet(here::here("data/analysis_data/mentalVsHealth_data.parquet"))
 ```
 
 
 # Introduction {#sec-intro}
-
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
-
-The remainder of this paper is structured as follows. @sec-data....
 
 This paper begins with an [Introduction] framing the impact of economic downturns on work hours. It is followed by the [Data] section detailing methodology and cleaning efforts. In the [Results], we analyze work hours and nonresponse rates, leading to the [Discussion] on labour market responses to crises, including the impact of COVID-19, and addressing ethical issues. We later acknowledge our paper's Limitations, suggest paths for Future Research, especially on enhancing response rates, and conclude with a synthesis of our insights. The [Appendix] provides further survey information.
 
@@ -75,7 +71,7 @@ For the analysis, we retrieved the following data as described in @tbl-use-var.
 
 ## Data Cleaning
 
-The data was cleaned by using the open source statistically programming language R [@citeR], with libraries `tidyverse` [@tidyverse], `ggplot2` [@ggplot2], `dplyr` [@dplyr], `readr` [@readr], `tibble` [@tibble], `here` [@here], `kableExtra` [@kableExtra], `janitor` [@janitor], and `knitr` [@knitr].
+The data was cleaned by using the open source statistically programming language R [@citeR], with libraries `tidyverse` [@tidyverse], `ggplot2` [@ggplot2], `dplyr` [@dplyr], `readr` [@readr], `tibble` [@tibble], `here` [@here], `kableExtra` [@kableExtra], `janitor` [@janitor], `arrow` [@arrow], and `knitr` [@knitr].
 
 [^1]: https://gss.norc.org/documents/stata/GSS_stata.zip
 
@@ -87,7 +83,7 @@ some words
 
 ## Demographic Variables 
 ```{r}
-#| label: tbl-data-overview
+#| label: tbl-demo-overview
 #| tbl-cap: Overview of the Demographic Data 
 #| echo: false
 #| warning: false
@@ -96,14 +92,71 @@ some words
 vars <- c("ID","Gender","Age","Physical Unwellness","Mental Unwellness","Age Cohort")
 
 kable(head(demo_data), 
-      caption = "Counted days of Physical and Mental unwellness of Population by Age and Gender Group", 
+      caption = "Counted days of Physical and Mental unwellness of Population by Age and Gender Groups", 
       align = "c",
       col.names = vars,
       row.names = FALSE) |>
   kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
 ```
 
-## Demographic Variables 
+## Mental and Physical Unwellness and Depression Diagnosis
+```{r}
+#| label: tbl-analysis-vars
+#| tbl-cap: Overview of the Main Analysis Dataset
+#| echo: false
+#| warning: false
+#| message: false
+
+vars <- c("ID","Physical Unwellness","Mental Unwellness","Depression Diagnosis")
+
+kable(head(analysis_data), 
+      caption = "Counted days of Physical and Mental unwellness with Depression Diagnosis", 
+      align = "c",
+      col.names = vars,
+      row.names = FALSE) |>
+  kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
+```
+
+## Mental Unwellness and General Health Status
+```{r}
+#| label: tbl-health-vars
+#| tbl-cap: Overview of the Mental Unwellness vs. General Health Status Dataset 
+#| echo: false
+#| warning: false
+#| message: false
+
+vars <- c("ID","Mental Unwellness","General Health")
+
+kable(head(mentalVsHealth), 
+      caption = "Counted days of Mental unwellness with General Health Status", 
+      align = "c",
+      col.names = vars,
+      row.names = FALSE) |>
+  kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
+```
+
+## Non-response Rate
+
+??? maybe include a table of non-response rate
+
+Some of the questions in the dataset are not included resulting no responses collected in certain years, while the other responses were collected. This fact requires extra attention when cleaning and handling since the number of available responses will decrease when additional variables are added. Hence, an additional sub set of the data that only includes counted days of mental and physical un-wellness in the past 30 days is also included for only speculating these two variables. 
+
+```{r}
+#| label: tbl-sub-vars
+#| tbl-cap: Overview of the Mental and Physical Unwellness
+#| echo: false
+#| warning: false
+#| message: false
+
+vars <- c("ID","Physical Unwellness","Mental Unwellness")
+
+kable(head(days_data), 
+      caption = "Counted days of Mental unwellness with General Health Status", 
+      align = "c",
+      col.names = vars,
+      row.names = FALSE) |>
+  kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
+```
 
 # Model
 The goal of our modelling strategy is twofold. Firstly,...
@@ -229,6 +282,86 @@ demo_data |>
 ```
 \break
 
+## Depression Playing an Role
+```{r}
+#| label: fig-mental-vs-physical
+#| fig-cap: Counts of Days Feeling Unwell in Last 30 Days
+#| echo: false
+#| warning: false
+#| message: false
+
+#Modify depress status for visualization
+analysis_data$depress <- as.character(analysis_data$depress)
+analysis_data <- mutate(analysis_data,
+               depress = case_when(
+                 depress == "1" ~ "Yes",
+                 depress == "2" ~ "No",
+                 TRUE ~ depress
+               )
+            )
+
+#Graph
+analysis_data|>
+  ggplot(aes(x = ment_days, y = phys_days, color = depress)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  theme_minimal() +
+  labs(x = "Mental Unwellness", y = "Physical Unwellness", color = "Depress") +
+  scale_color_brewer(palette = "Set1") +
+  theme(legend.position = "bottom")
+```
+\break
+
+## Mental Health and Health in General
+```{r}
+#| label: fig-mental-vs-general
+#| fig-cap: Counts of Days Feeling Unwell in Last 30 Days
+#| echo: false
+#| warning: false
+#| message: false
+
+#Graph
+mentalVsHealth|>
+  ggplot(aes(x = ment_days, y = health)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  theme_minimal() +
+  labs(x = "Mental Unwellness", y = "General Health") +
+  scale_color_brewer(palette = "Set1") +
+  theme(legend.position = "bottom")
+```
+\break
+
+## Model Results
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+library(rstanarm)
+
+first_model <-
+  readRDS(file = here::here("models/first_model.rds"))
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| label: tbl-modelresults
+#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| warning: false
+
+modelsummary::modelsummary(
+  list(
+    "First model" = first_model
+  ),
+  statistic = "mad",
+  fmt = 2
+)
+```
+
+
 # Discussion {#sec-discussion}
 
 ## First discussion point {#sec-first-point}
@@ -259,14 +392,52 @@ In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. 
 
 In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
 
+```{r}
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+#| label: fig-ppcheckandposteriorvsprior
+#| layout-ncol: 2
+#| fig-cap: "Examining how the model fits, and is affected by, the data"
+#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
+
+pp_check(first_model) +
+  theme_classic() +
+  theme(legend.position = "bottom")
+
+posterior_vs_prior(first_model) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  theme(legend.position = "bottom") +
+  coord_flip()
+```
+
 ## Diagnostics
 
 @fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
 
 @fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
 
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+#| label: fig-stanareyouokay
+#| fig-cap: "Checking the convergence of the MCMC algorithm"
+#| fig-subcap: ["Trace plot", "Rhat plot"]
+#| layout-ncol: 2
+
+plot(first_model, "trace")
+
+plot(first_model, "rhat")
+```
+
+
 
 \newpage
+
 
 
 # References

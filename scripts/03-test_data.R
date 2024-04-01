@@ -4,7 +4,7 @@
 # Date: 31 March 2024
 # Contact: mingjia.chen@mail.utoronto.ca 
 # License: MIT
-# Pre-requisites: cleaned_GSS.parquet, days_data.parquet, demo_data.parquet, depress_data.parquet, mentalVsMental_data.parquet
+# Pre-requisites: GSS.dct, GGS.dat, data_cleaning.R
 
 
 #### Workspace setup ####
