@@ -138,6 +138,31 @@ kable(head(mentalVsHealth),
 ## Non-response Rate
 
 ??? maybe include a table of non-response rate
+```{r}
+#| label: fig-nonresponse-rate
+#| fig-cap: Nonresponse Rates
+#| echo: false
+#| warning: false
+#| message: false
+
+# record number of non-responses in variables ment_days, phys_days, and depress
+no_response_data <- rep(0,3)
+
+#length(which(<condition>)) code referenced from https://www.geeksforgeeks.org/count-repeated-values-in-r/
+no_response_data <- c(length(which(GSS$phys_days<1)),length(which(GSS$ment_days<1)),length(which(GSS$depress<1)))
+
+# calculate the percentages
+total_responses <- nrow(GSS)
+non_response_rate <- no_response_data/total_responses
+questions <- c("Physical Unwellness","Mental Unwellness","Depression Status")
+non_response_data <- cbind(questions,non_response_rate)
+  
+ggplot(non_response_data, aes(x = questions,y=non_response_rate)) +
+  geom_bar(stat = "identity",fill = "skyblue") +
+  theme_minimal() +
+  labs(title = "Non-Response Rates of each Question", x = "Questions", y = "Percentage of Non-Responses") 
+
+```
 
 Some of the questions in the dataset are not included resulting no responses collected in certain years, while the other responses were collected. This fact requires extra attention when cleaning and handling since the number of available responses will decrease when additional variables are added. Hence, an additional sub set of the data that only includes counted days of mental and physical un-wellness in the past 30 days is also included for only speculating these two variables. 
 
