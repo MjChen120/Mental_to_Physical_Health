@@ -63,7 +63,7 @@ The data was downloaded and filtered for the selected variables from the selecte
 | YEAR     | year      | Year of the Data Recorded     | 1977    |
 | SEX      | sex       | Respondent's gender           | Female/2|
 | AGE      | age       | Respondent's age              | 25      |
-| HEALTH   | health    | Respondents' health condition | Good    |
+| HEALTH   | health    | Respondents' health condition | Good/2  |
 | PHYSHLTH | phys_days | Days of Respondents' physical health being not good   | 15      |
 | MNTLHLTH | ment_days | Days of Respondents' mental health being not good     | 20      |
 | DEPRESS  | depress   | Whether respondents have been told having depression  | Yes/1   |
@@ -320,7 +320,7 @@ Include some research about female having trouble due to medical racism etc. and
 
 
 #Graph
-graph_data|>
+analysis_data|>
   ggplot(aes(x = ment_days, y = phys_days, color = depress)) +
   geom_point() +
   geom_smooth(method = "lm") +

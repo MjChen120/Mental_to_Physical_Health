@@ -13,7 +13,7 @@ library(arrow)
 library(dplyr)
 
 #### Load data ####
-# This part of the code is from GSS Open Explore
+# This part of the code is from GSS Open Explore (https://gssdataexplorer.norc.org/home)
 
 # When downloading the dataset from the website, the R script can be chosen to
 # be downloaded as well.
