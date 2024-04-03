@@ -43,7 +43,10 @@ mentalVsHealth <- read_parquet(here::here("data/analysis_data/mentalVsHealth_dat
 
 # Introduction {#sec-intro}
 
-This paper begins with an [Introduction] framing the impact of economic downturns on work hours. It is followed by the [Data] section detailing methodology and cleaning efforts. In the [Results], we analyze work hours and nonresponse rates, leading to the [Discussion] on labour market responses to crises, including the impact of COVID-19, and addressing ethical issues. We later acknowledge our paper's Limitations, suggest paths for Future Research, especially on enhancing response rates, and conclude with a synthesis of our insights. The [Appendix] provides further survey information.
+This paper begins with [Introduction] framing the impact of mental health on one's well being. The [Data] section details variables, methodology, and cleaning processes used for analyses. In [Model] section, a model is proposed for determining how individual's depression status and counted days of mental unwellness in the past 30 days impacts their counted days of physical unwellness in the past 30 days. [Results] section analyzes how demographic and other mental health related factors would affect physical health with model calculations. 
+
+? Still need to fix this part
+[Discussion] section includes . We later acknowledge our paper's [Limitations], suggest paths for [Future Research], especially on enhancing response rates, and conclude with a synthesis of our insights. The [Appendix] provides further survey information.
 
 
 # Data {#sec-data}
@@ -51,20 +54,19 @@ This paper begins with an [Introduction] framing the impact of economic downturn
 The paper uses data collected from the US General Social Survey (GSS) from NORIC at the University of Chicago [@GSS]. From the dataset, this paper focuses on the "number of hours worked last week" variable, from the years 1992 to 2022. This longitudinal approach allows us to compare labour dynamics across different economic downturns, including the 1998 Asian Financial Crisis, the 2008 Global Financial Crisis, and the COVID-19 pandemic in 2020.
 
 ## Source Data
-The data was downloaded and filtered for the selected variables from the selected data variables from GSS[^1]. The data cleaning was performed based on value definitions as defined in the GSS codebooks [@gssCodebook]. One of the variable names `response` is renamed to be more informative (@tbl-use-var).
+The data was downloaded and filtered for the selected variables from the selected data variables from GSS[^1]. The data cleaning was performed based on value definitions as defined in the GSS codebooks [@gssCodebook]. The variable names are renamed to be more informative (@tbl-use-var).
 
-For the analysis, we retrieved the following data as described in @tbl-use-var.
 
 | Variable | New Name  | Description                   | Example |
 |----------|-----------|-------------------------------|---------|
 | ID_      | id        | Response ID                   | 1       |
 | YEAR     | year      | Year of the Data Recorded     | 1977    |
-| SEX      | sex       | Respondent's gender           | Female  |
+| SEX      | sex       | Respondent's gender           | Female/2|
 | AGE      | age       | Respondent's age              | 25      |
 | HEALTH   | health    | Respondents' health condition | Good    |
 | PHYSHLTH | phys_days | Days of Respondents' physical health being not good   | 15      |
 | MNTLHLTH | ment_days | Days of Respondents' mental health being not good     | 20      |
-| DEPRESS  | depress   | Whether respondents have been told having depression  | Yes     |
+| DEPRESS  | depress   | Whether respondents have been told having depression  | Yes/1   |
 
 
 : Source data retrieved from GSS {#tbl-use-var}
@@ -74,7 +76,6 @@ For the analysis, we retrieved the following data as described in @tbl-use-var.
 The data was cleaned by using the open source statistically programming language R [@citeR], with libraries `tidyverse` [@tidyverse], `ggplot2` [@ggplot2], `dplyr` [@dplyr], `readr` [@readr], `tibble` [@tibble], `here` [@here], `kableExtra` [@kableExtra], `janitor` [@janitor], `arrow` [@arrow], and `knitr` [@knitr].
 
 [^1]: https://gss.norc.org/documents/stata/GSS_stata.zip
-
 
 
 ## Survey Methodology
@@ -137,7 +138,6 @@ kable(head(mentalVsHealth),
 
 ## Non-response Rate
 
-??? maybe include a table of non-response rate
 ```{r}
 #| label: fig-nonresponse-rate
 #| fig-cap: Nonresponse Rates
@@ -153,7 +153,8 @@ no_response_data <- c(length(which(GSS$phys_days<1)),length(which(GSS$ment_days<
 
 # calculate the percentages
 total_responses <- nrow(GSS)
-non_response_rate <- no_response_data/total_responses
+non_response_rate <- no_response_data/total_responses 
+non_response_rate <- round(non_response_rate,3)
 questions <- c("Physical Unwellness","Mental Unwellness","Depression Status")
 non_response_data <- cbind(questions,non_response_rate)
   
@@ -164,7 +165,7 @@ ggplot(non_response_data, aes(x = questions,y=non_response_rate)) +
 
 ```
 
-Some of the questions in the dataset are not included resulting no responses collected in certain years, while the other responses were collected. This fact requires extra attention when cleaning and handling since the number of available responses will decrease when additional variables are added. Hence, an additional sub set of the data that only includes counted days of mental and physical un-wellness in the past 30 days is also included for only speculating these two variables. 
+As shown in @fig-nonresponse-rate, some of the questions in the dataset are not included resulting no responses collected in certain years due to the change in survey methodology. This fact requires extra attention when cleaning and handling since the number of available responses will decrease when additional variables are added. Hence, an additional sub set of the data that only includes counted days of mental and physical un-wellness in the past 30 days (@tbl-sub-vars) is also included for only speculating these two variables while keeping as many responses as possible. 
 
 ```{r}
 #| label: tbl-sub-vars
@@ -239,7 +240,7 @@ demo_data <- within(demo_data, {
 
 ```{r}
 #| label: fig-demo-mental
-#| fig-cap: Gender and Age of People Apprehended Visulization Year-Depended
+#| fig-cap: Female Participants from 20 to 59 Years Old are More likely to Experience Mental Unwellness 
 #| fig-subcap: ["Gender","Age cohorts"]
 #| layout-ncol: 2
 #| echo: false
@@ -274,7 +275,7 @@ demo_data |>
 
 ```{r}
 #| label: fig-demo-physical
-#| fig-cap: Gender and Age of People Apprehended Visulization Year-Depended22
+#| fig-cap: Female Participants from 20 to 59 Years Old are More likely to Experience Physical Unwellness 
 #| fig-subcap: ["Gender","Age cohorts"]
 #| layout-ncol: 2
 #| echo: false
@@ -307,6 +308,8 @@ demo_data |>
 ```
 \break
 
+Include some research about female having trouble due to medical racism etc. and possible reason why these age cohorts are more likely to experience both physical and mental unwellness.
+
 ## Depression Playing an Role
 ```{r}
 #| label: fig-mental-vs-physical
@@ -315,18 +318,9 @@ demo_data |>
 #| warning: false
 #| message: false
 
-#Modify depress status for visualization
-analysis_data$depress <- as.character(analysis_data$depress)
-analysis_data <- mutate(analysis_data,
-               depress = case_when(
-                 depress == "1" ~ "Yes",
-                 depress == "2" ~ "No",
-                 TRUE ~ depress
-               )
-            )
 
 #Graph
-analysis_data|>
+graph_data|>
   ggplot(aes(x = ment_days, y = phys_days, color = depress)) +
   geom_point() +
   geom_smooth(method = "lm") +

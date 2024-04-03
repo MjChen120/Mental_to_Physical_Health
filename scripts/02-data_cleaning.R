@@ -102,6 +102,15 @@ days_data <- select(days_data,c("id","phys_days","ment_days"))
 # and Number of days of Physical un-wellness
 analysis_data <- filter(GSS, phys_days >= 0) %>% filter(depress >= 0) %>% filter(ment_days >= 0)
 analysis_data <- select(analysis_data,c("id","phys_days","ment_days","depress"))
+#Modify depress status for visualization
+analysis_data$depress <- as.character(analysis_data$depress)
+analysis_data <- mutate(analysis_data,
+                     depress = case_when(
+                       depress == "1" ~ "Yes",
+                       depress == "2" ~ "No",
+                       TRUE ~ depress
+                     )
+)
 
 # 4. Dataset for the relationship between Numbers of days of Mental un-wellness
 # and one's health status in general
