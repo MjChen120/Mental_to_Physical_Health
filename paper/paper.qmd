@@ -1,6 +1,6 @@
 ---
 title: "Mental Health Plays Significant Role in Physical Wellnesss in 1972 to 2022 US General Social Surveys"
-subtitle: "Racial and Gender Unequity and Mental Illness Being Overlooked in the Medical Field"
+subtitle: "Mental Illness Being Overlooked in the Medical Field with Racial and Gender Unequity"
 author: 
   - Mingjia Chen
 thanks: "Code and data are available at: https://github.com/MjChen120/Mental_to_Physical_Health.git."
@@ -47,7 +47,7 @@ Mental health is one essential aspect of the general health of an individual and
 
 U.S. General Social Survey (GSS) data from 1972 to 2022 is used for this paper to examine whether the demographic and mental health-related factors as indicators of physical health conditions. The estimand is the difference in whether an individual could experience more occasions of feeling physically unwell if they have mental health unwellness versus not. This is considered in terms of those who were diagnosed as having depression by a doctor.
 
-The analysis of GSS data, including gender, age, and mental and physical health variables, seeks to provide detailed insights into how mental health issues impact physical unwellness, contributing to discussions on intersectionality and overlooked mental health in the medical field.
+The analysis of GSS data, including gender, age, and mental and physical health variables, seeks to provide detailed insights into how mental health issues impact physical unwellness, contributing to discussions on intersectionality (complex sociological analytically framework for studying social and political identities resulted from unique combinations of discrimination and privilege) and overlooked mental health in the medical field.
 
 <Results paragraph>
 
@@ -59,7 +59,7 @@ The paper uses data collected from the US General Social Survey (GSS) from NORIC
 
 ## Source Data
 
-The data was downloaded and filtered for the selected variables from the selected data variables from GSS[^1]. The data cleaning was performed based on value definitions as defined in the GSS codebooks [@gssCodebook]. The variable names are renamed to be more informative (@tbl-use-var).
+Physical and mental health variables such as "health", "depress" status, and reported days of physical ("physhlth") and health ("mntlhlth") unwellness in a month are selected from GSS [@GSS] for main analysis. Variable "year" is chosen for checking data consistency and non-response rate over the years. Demographic data, specifically age and gender, were used as well for further analyses. The data was downloaded and filtered for the selected variables from the selected data variables from GSS[^1]. The data cleaning was performed based on value definitions as defined in the GSS codebooks [@gssCodebook]. The variable names are renamed to be more informative (@tbl-use-var).
 
 
 | Variable | New Name  | Description                   | Example |
@@ -82,12 +82,38 @@ The data was cleaned by using the open source statistically programming language
 
 [^1]: https://gss.norc.org/documents/stata/GSS_stata.zip
 
+```{r}
+#| label: tbl-sub-vars
+#| tbl-cap: Overview of the Mental and Physical Unwellness
+#| echo: false
+#| warning: false
+#| message: false
+
+vars <- c("ID","Physical Unwellness","Mental Unwellness")
+
+kable(head(days_data), 
+      caption = "Counted days of Mental unwellness with General Health Status", 
+      align = "c",
+      col.names = vars,
+      row.names = FALSE) |>
+  kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
+```
 
 ## Survey Methodology
 
-will be written
+From 1992 until 2018, the General Social Survey (GSS) relied on face-to-face interviews to gather data. This method offered a robust data collection environment, allowing interviewers to delve deeper into responses and clarify any uncertainties. It provided an optimal means of gathering comprehensive data. However, in response to the COVID-19 Pandemic, between 2020 and 2021, the GSS transitioned primarily to web surveys for data collection.
+
+The GSS targeted English or Spanish-speaking adults aged 18 and above residing in US households [@GSS]. This inclusive criteria aimed to attract a diverse pool of participants. Nevertheless, individuals falling outside this target demographic were deemed ineligible for the survey. Those who didn't speak English or Spanish or had mental and/or physical impediments preventing survey participation were considered outside the scope of the GSS [@GSS].
+
+Changes in the GSS's respondent selection process, such as modifications to the Kish grid methodology, present additional hurdles, potentially skewing the demographic representation of respondents. The move towards web-based surveys may have inadvertently excluded older demographics, who are typically less inclined to engage with online platforms, thus impacting the survey's demographic balance. This demographic shift is significant, as older populations may offer distinct perspectives, particularly concerning mental health issues.
+
+The survey queried participants with the questions, such as "Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good?" and "Now thinking about your physical health, which includes physical illness and injury, for how many days during the past 30 days was your physical health not good?" and expecting a response of number of days in a month. Significantly, between 1998 and 2022, the structure of the questions have consistently remained the same. This consistency in formatting ensures the data's stability, facilitating a high level of consistency for thorough analysis. The data consists of a combination of in-person, telephone, and web surveys.
+
 
 ## Demographic Variables 
+
+Demographic variables such as gender and age are used to compare and contrast differences between population groups. To further analyze age, the continuous variable is categorized into cohorts "0-19","20-39","40-59","60-79", and "80+". Below attached an overview of the sub-dataset used for demographic analysis.
+
 ```{r}
 #| label: tbl-demo-overview
 #| tbl-cap: Overview of the Demographic Data 
@@ -106,6 +132,9 @@ kable(head(demo_data),
 ```
 
 ## Mental and Physical Unwellness and Depression Diagnosis
+
+One of the key variable used for further analysis is whether the respondent have been diagnosed as having depression by a doctor in the past. The survey used the question "Now I would like to ask you some questions about general health conditions. Has a doctor, nurse, or other health professional EVER told you that you had: D. Depression?" to collect a categorical response of "Yes" or "No". The variable is an external indication of respondents' mental health status, accompanying the main counted days variable that is used for the analysis.
+
 ```{r}
 #| label: tbl-analysis-vars
 #| tbl-cap: Overview of the Main Analysis Dataset
@@ -124,6 +153,9 @@ kable(head(analysis_data),
 ```
 
 ## Mental Unwellness and General Health Status
+
+A variable collecting general health status is furthermore included for additional analyses. The variable is used as a supplementary tool indicating respondents' health in general to assist the analysis result. The question consists of four categorical responses by asking the respondents: "Would you say your own health, in general, is excellent, good, fair, or  poor?"
+
 ```{r}
 #| label: tbl-health-vars
 #| tbl-cap: Overview of the Mental Unwellness vs. General Health Status Dataset 
@@ -142,6 +174,12 @@ kable(head(mentalVsHealth),
 ```
 
 ## Non-response Rate
+
+To mitigate non-responses in the survey, the GSS implemented a technique known as subsampling for non-respondents. The core concept of subsampling entails selecting a subset of non-respondents and adjusting their weights to ensure an impartial design [@gssCodebook2014]. This chosen subsample is then expanded to effectively mirror all non-respondents up to a predetermined cutoff date. By focusing resources on a more manageable subset of difficult cases for further follow-up, subsampling offers the potential to reduce both response error and non-response bias [@gssCodebook2014].
+
+The GSS's approach to managing non-responses underwent changes, notably in its recent iterations – specifically during the COVID-19 Pandemic. As web surveys were used in the 2021 survey, modifications were made to balance non-responses. Historically, the survey employed subsampling techniques to mitigate the impact of non-responses, ensuring a representative dataset. 
+
+However, with the introduction of web-based surveys, new categories like "Skipped on Web" were introduced to categorize non-responses. This change raises questions about the comparability of data across years and the potential for increased non-response rates. Non-responses (@fig-nonresponse-rate) can significantly affect the analysis of physical and mental health status trends, particularly in capturing the full extent of respondents' health status. Furthermore, as mental health is a later introduced science compared to physical health and thus is not included in most of the previous surveys. Although survey data lack of mental health related questions is filtered out for analyses, it is important to take that fact into consideration. 
 
 ```{r}
 #| label: fig-nonresponse-rate
@@ -169,33 +207,16 @@ ggplot(non_response_data, aes(x = questions,y=non_response_rate)) +
   labs(title = "Non-Response Rates of each Question", x = "Questions", y = "Percentage of Non-Responses") 
 
 ```
-\break
 
 As shown in @fig-nonresponse-rate, some of the questions in the dataset are not included resulting no responses collected in certain years due to the change in survey methodology. This fact requires extra attention when cleaning and handling since the number of available responses will decrease when additional variables are added. Hence, an additional sub set of the data that only includes counted days of mental and physical un-wellness in the past 30 days (@tbl-sub-vars) is also included for only speculating these two variables while keeping as many responses as possible. 
-
-```{r}
-#| label: tbl-sub-vars
-#| tbl-cap: Overview of the Mental and Physical Unwellness
-#| echo: false
-#| warning: false
-#| message: false
-
-vars <- c("ID","Physical Unwellness","Mental Unwellness")
-
-kable(head(days_data), 
-      caption = "Counted days of Mental unwellness with General Health Status", 
-      align = "c",
-      col.names = vars,
-      row.names = FALSE) |>
-  kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
-```
 
 \break
 
 # Model
-The goal of our modelling strategy is twofold. Firstly,...
+Through the data analysis of the paper, a potential correlation between counted days of feeling mental and physical unwell is detected. To further analyze and estimate counted days of feeling physical unwell based on an individuals counted days of feeling mentally unwell and whether they were diagnosed as depressive in the past, a linear regression analysis is conducted.
 
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
+Background details and diagnostics are included in [Appendix -@sec-model-details].
+
 
 ## Model set-up
 
@@ -315,6 +336,26 @@ demo_data |>
 
 Include some research about female having trouble due to medical racism etc. and possible reason why these age cohorts are more likely to experience both physical and mental unwellness.
 
+## Mental Health and Health in General
+```{r}
+#| label: fig-mental-vs-general
+#| fig-cap: Counts of Days Feeling Unwell in Last 30 Days
+#| echo: false
+#| warning: false
+#| message: false
+
+#Graph
+mentalVsHealth|>
+  ggplot(aes(x = ment_days, y = health)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  theme_minimal() +
+  labs(x = "Mental Unwellness", y = "General Health") +
+  scale_color_brewer(palette = "Set1") +
+  theme(legend.position = "bottom")
+```
+\break
+
 ## Depression Playing an Role
 ```{r}
 #| label: fig-mental-vs-physical
@@ -336,27 +377,8 @@ analysis_data|>
 ```
 \break
 
-## Mental Health and Health in General
-```{r}
-#| label: fig-mental-vs-general
-#| fig-cap: Counts of Days Feeling Unwell in Last 30 Days
-#| echo: false
-#| warning: false
-#| message: false
-
-#Graph
-mentalVsHealth|>
-  ggplot(aes(x = ment_days, y = health)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  theme_minimal() +
-  labs(x = "Mental Unwellness", y = "General Health") +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom")
-```
-\break
-
 ## Model Results
+
 ```{r}
 #| echo: false
 #| eval: true
@@ -373,7 +395,7 @@ first_model <-
 #| echo: false
 #| eval: true
 #| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| tbl-cap: "Explanatory models of counted days of physical unwellness based on counted days of mental unwellness and depression diagnosis"
 #| warning: false
 
 modelsummary::modelsummary(
