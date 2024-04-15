@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Models... [...UPDATE THIS...]
+# Purpose: Models created and prepared for studying whether reported days of mental unwellness in a month and being reported as having depression can have a impact on number of reported days of being physically unwell.
 # Author: Mingjia Chen 
 # Date: 31 March 2024 
 # Contact: mingjia.chen@mail.utoronto.ca 

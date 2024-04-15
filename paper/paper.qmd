@@ -1,6 +1,6 @@
 ---
-title: "Mental Health Plays Significant Role in Physical Wellness"
-subtitle: "Intersectionality and Mental Illness Being Overlooked in the Medical Field"
+title: "Mental Health Plays Significant Role in Physical Wellnesss in 1972 to 2022 US General Social Surveys"
+subtitle: "Racial and Gender Unequity and Mental Illness Being Overlooked in the Medical Field"
 author: 
   - Mingjia Chen
 thanks: "Code and data are available at: https://github.com/MjChen120/Mental_to_Physical_Health.git."
@@ -43,9 +43,9 @@ mentalVsHealth <- read_parquet(here::here("data/analysis_data/mentalVsHealth_dat
 
 # Introduction {#sec-intro}
 
-Mental health is one essential aspect of the general health of an individual and yet it is often overlooked in the past centuries. Mental illnesses are not only “silent diseases” of one’s mind, but could as well impact patients’ physical well-being in general [@Ohrnberger_Fichera_Sutton]. As browsing through relevant journal articles, a question arises: could mental health-related and demographic factors impact the number of days an individual experiences physical unwellness in a month?
+Mental health is one essential aspect of the general health of an individual and yet it is often overlooked. Mental illnesses are not only “silent diseases” of one’s mind, but could as well impact patients’ physical well-being in general [@Ohrnberger_Fichera_Sutton]. This paper examines whether mental health-related and demographic factors impact the number of days an individual experiences physical unwellness in a month?
 
-U.S. General Social Survey (GSS) data is used for this paper to examine whether the demographic and mental health-related factors as indicators of physical health conditions. The estimand is the difference in whether an individual could experience more occasions of feeling physically unwell if they have mental health unwellness versus not. This is considered in terms of those who were diagnosed as having depression by a doctor.
+U.S. General Social Survey (GSS) data from 1972 to 2022 is used for this paper to examine whether the demographic and mental health-related factors as indicators of physical health conditions. The estimand is the difference in whether an individual could experience more occasions of feeling physically unwell if they have mental health unwellness versus not. This is considered in terms of those who were diagnosed as having depression by a doctor.
 
 The analysis of GSS data, including gender, age, and mental and physical health variables, seeks to provide detailed insights into how mental health issues impact physical unwellness, contributing to discussions on intersectionality and overlooked mental health in the medical field.
 
@@ -85,7 +85,7 @@ The data was cleaned by using the open source statistically programming language
 
 ## Survey Methodology
 
-some words
+will be written
 
 ## Demographic Variables 
 ```{r}
@@ -169,6 +169,7 @@ ggplot(non_response_data, aes(x = questions,y=non_response_rate)) +
   labs(title = "Non-Response Rates of each Question", x = "Questions", y = "Percentage of Non-Responses") 
 
 ```
+\break
 
 As shown in @fig-nonresponse-rate, some of the questions in the dataset are not included resulting no responses collected in certain years due to the change in survey methodology. This fact requires extra attention when cleaning and handling since the number of available responses will decrease when additional variables are added. Hence, an additional sub set of the data that only includes counted days of mental and physical un-wellness in the past 30 days (@tbl-sub-vars) is also included for only speculating these two variables while keeping as many responses as possible. 
 
@@ -188,6 +189,8 @@ kable(head(days_data),
       row.names = FALSE) |>
   kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
 ```
+
+\break
 
 # Model
 The goal of our modelling strategy is twofold. Firstly,...
@@ -212,6 +215,7 @@ We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use
 
 ### Model justification
 
+will be written
 
 # Results {#sec-results}
 
@@ -454,11 +458,10 @@ plot(first_model, "trace")
 plot(first_model, "rhat")
 ```
 
+\break
 
 
 \newpage
-
-
 
 # References
 
