@@ -6,7 +6,7 @@ author:
 thanks: "Code and data are available at: https://github.com/MjChen120/Mental_to_Physical_Health.git."
 date: today
 date-format: long
-abstract: "Mental health is a relatively newly introduced topic in the field, but would mental health issues influence physical health as well? Focusing on numerous variables correlated to mental and physical health, this study uses data from the U.S. General Social Survey (GSS) from 1972 to 2022 to investigate the impact of mental health unwellness on physical health unwellness, focusing specifically on “reported days of feeling unwell in a month.” Our analysis reveals that mental unwellness leads to an increase in physical unwellness, and identifies disparities between demographic groups, with women disproportionately affected. These findings underscore the necessity for the importance of promoting mental health and supporting underrepresented groups in the medical field.."
+abstract: "Mental health is a relatively newly introduced topic in the field, but would mental health issues influence physical health as well? Focusing on numerous variables correlated to mental and physical health, this study uses data from the U.S. General Social Survey (GSS) from 1972 to 2022 to investigate the impact of mental health unwellness on physical health unwellness, focusing specifically on “reported days of feeling unwell in a month.” Our analysis reveals that mental unwellness leads to an increase in physical unwellness, and identifies disparities between demographic groups, with women disproportionately affected. These findings underscore the necessity for the importance of promoting mental health and supporting underrepresented groups in the medical field."
 format: pdf
 toc: true
 number-sections: true
@@ -59,7 +59,7 @@ The paper uses data collected from the US General Social Survey (GSS) from NORIC
 
 ## Source Data
 
-Physical and mental health variables such as "health", "depress" status, and reported days of feeling physical ("physhlth") and health ("mntlhlth") unwell in a month are selected from GSS [@GSS] for main analysis. Variable "year" is chosen for checking data consistency and non-response rate over the years. Demographic data, specifically age and gender, were used as well for further analyses. The data was downloaded and filtered for the selected variables from the selected data variables from GSS[^1]. The data cleaning was performed based on value definitions as defined in the GSS codebooks [@gssCodebook]. The variable names are renamed to be more informative (@tbl-use-var).
+Physical and mental health variables such as "health", "depress" status, and reported days of feeling physical ("physhlth") and health ("mntlhlth") unwell in a month are selected from GSS [@GSS] for main analysis. Variable "year" is chosen for checking data consistency and non-response rate over the years. Demographic data, specifically age and gender, were used as well for further analyses. The data was downloaded and filtered for the selected variables from the selected data variables from GSS[^1]. In total, 72390 responses (with 56% from female respondents) containing mentioned variables were collected. The data cleaning was performed based on value definitions as defined in the GSS codebooks [@gssCodebook]. The variable names are renamed to be more informative (@tbl-use-var).
 
 
 | Variable | New Name  | Description                   | Example |
@@ -75,6 +75,27 @@ Physical and mental health variables such as "health", "depress" status, and rep
 
 
 : Source data retrieved from GSS {#tbl-use-var}
+
+```{r}
+#| label: tbl-sex
+#| tbl-cap: Number of Responses from Each Gender Group
+#| echo: false
+#| warning: false
+#| message: false
+
+genderdata <- filter(GSS, sex == 2)
+
+sex <- c("Male","Female")
+numbers <- c(nrow(genderdata), nrow(GSS)-nrow(genderdata))
+female_per <- round(nrow(genderdata)/nrow(GSS),2) * 100
+
+gendertable <- cbind(sex,numbers)
+kable(gendertable, 
+      align = "c",
+      row.names = FALSE,
+      col.names = c("Sex","Responses"))
+
+```
 
 ## Data Cleaning
 
@@ -99,6 +120,14 @@ kable(head(days_data),
   kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
 ```
 
+```{r}
+#| label: fig-countedDays
+#| tbl-cap: Number of Responses from Each Gender Group
+#| echo: false
+#| warning: false
+#| message: false
+
+```
 ## Survey Methodology
 
 From 1992 until 2018, the General Social Survey (GSS) relied on face-to-face interviews to gather data. This method offered a robust data collection environment, allowing interviewers to delve deeper into responses and clarify any uncertainties. It provided an optimal means of gathering comprehensive data. However, in response to the COVID-19 Pandemic, between 2020 and 2021, the GSS transitioned primarily to web surveys for data collection.
@@ -235,7 +264,7 @@ We anticipate that the counted days of feeling physical unwell would be closer t
 
 # Results {#sec-results}
 
-# Differences Detected betwen Demographic Populations
+## Differences Detected betwen Demographic Populations
 
 To speculate possible demographic factors influencing days of feeling mental and physical unwell in a month, gender and sex are used. In general, female from 20 to 39 years old are more likely to report higher number of days feeling mentally unwell (@fig-demo-mental). In terms of physical health, female from 40 to 59 years old report higher number of days feeling unwell (@fig-demo-physical). 
 

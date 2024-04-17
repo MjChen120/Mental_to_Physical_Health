@@ -1,8 +1,9 @@
-# Relationship Between Mental And Physical Health
+# Mental Health Plays Significant Role in Physical Wellness in 1972 to 2022 US General Social Surveys
+Mental Illness Being Overlooked in the Medical Field with Gender Disparities
 
 ## Overview
 
-This paper analyzes how mental health illness could lead to physical health problems. Many minor physical health issues are indicators of mental health problems.
+Mental health is a relatively newly introduced topic in the field, but would mental health issues influence physical health as well? Focusing on numerous variables correlated to mental and physical health, this study uses data from the U.S. General Social Survey (GSS) from 1972 to 2022 to investigate the impact of mental health unwellness on physical health unwellness, focusing specifically on “reported days of feeling unwell in a month.” Our analysis reveals that mental unwellness leads to an increase in physical unwellness, and identifies disparities between demographic groups, with women disproportionately affected. These findings underscore the necessity for the importance of promoting mental health and supporting underrepresented groups in the medical field.
 
 To use this folder, click the green "Code" button", then "Download ZIP". Move the downloaded folder to where you want to work on your own computer, and then modify it to suit.
 
