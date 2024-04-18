@@ -11,9 +11,11 @@
 library(tidyverse)
 library(arrow)
 library(dplyr)
+library(foreign)
 
 #### Load data ####
-# This part of the code is from GSS Open Explore (https://gssdataexplorer.norc.org/home)
+# This part of the code is from GSS Open Explore
+# (https://gssdataexplorer.norc.org/home)
 
 # When downloading the dataset from the website, the R script can be chosen to
 # be downloaded as well.
@@ -21,7 +23,6 @@ library(dplyr)
 #After running this part of the code, the data will be available for modifying
 # and analyzing.
 
-library(foreign)
 read.dct <- function(dct, labels.included = "yes") {
   temp <- readLines(dct)
   temp <- temp[grepl("_column", temp)]
@@ -43,8 +44,8 @@ read.dct <- function(dct, labels.included = "yes") {
     out <- gsub("^\\s+|\\s+$", "", out)
     out <- gsub('\"', "", out, fixed = TRUE)
     class(out) <- classes[x] ; out }), NAMES)
-  temp_metadata[["ColName"]] <- make.names(gsub("\\s", "", temp_metadata[["ColName"]]))
-  temp_metadata
+    temp_metadata[["ColName"]] <- make.names(gsub("\\s", "", temp_metadata[["ColName"]]))
+    temp_metadata
 }
 
 read.dat <- function(dat, metadata_var, labels.included = "yes") {
@@ -61,18 +62,18 @@ GSS <- GSS_ascii
 #### Clean data ####
 # Actual Data cleaning
 
-# Select desired variables and rename them for easier access/analyze 
-GSS <- select(GSS,c("ID_","YEAR","SEX","AGE","HEALTH","PHYSHLTH","MNTLHLTH","DEPRESS"))
-colnames(GSS) <- c("id","year","sex","age","health","phys_days","ment_days","depress")
+# Select desired variables and rename them for easier access/analyze
+GSS <- select(GSS, c("ID_", "YEAR", "SEX", "AGE", "HEALTH", "PHYSHLTH", "MNTLHLTH", "DEPRESS"))
+colnames(GSS) <- c("id", "year", "sex", "age", "health", "phys_days", "ment_days", "depress")
 
 # Since we have non-responses due to the fact that many variables were only collected in
 # certain years, four separate datasets will be used for the paper.
 
 # 1. Dataset for demographic variables
-## Gender, Age, Numbers of days of Physical and Mental un-wellness. 
+## Gender, Age, Numbers of days of Physical and Mental un-wellness.
 demo_data <- filter(GSS, ment_days >= 0) %>% filter(phys_days >= 0) %>% 
   filter(age >= 1) %>% filter(sex >= 1)
-demo_data <- select(demo_data,c("id","sex","age","phys_days","ment_days"))
+demo_data <- select(demo_data, c("id", "sex", "age", "phys_days", "ment_days"))
 
 # change the sex variables from numbers to strings female and male
 demo_data$sex <- as.character(demo_data$sex)
@@ -84,7 +85,7 @@ demo_data <- mutate(demo_data,
                )
             )
 
-#categorize ages into five cohorts 
+#categorize ages into five cohorts
 #code referenced from https://pubs.wsb.wisc.edu/academics/analytics-using-r-2019/convert-numerical-data-to-categorical.html
 demo_data <- within(demo_data, {   
   age_cohort <- NA # need to initialize variable
@@ -96,16 +97,17 @@ demo_data <- within(demo_data, {
 } )
 # 2. Dataset for the relationship between Numbers of days of Physical and Mental un-wellness
 days_data <- filter(GSS, ment_days >= 0) %>% filter(phys_days >= 0)
-days_data <- select(days_data,c("id","phys_days","ment_days"))
+days_data <- select(days_data, c("id", "phys_days", "ment_days"))
 
-# 3. Dataset for the relationship between whether diagnozed as having depression 
+# 3. Dataset for the relationship between whether diagnozed as having depression
 # and Number of days of Physical un-wellness
-analysis_data <- filter(GSS, phys_days >= 0) %>% filter(depress >= 0) %>% filter(ment_days >= 0)
-analysis_data <- select(analysis_data,c("id","phys_days","ment_days","depress"))
+analysis_data <- filter(GSS, phys_days >= 0) %>% filter(depress >= 0) %>%
+  filter(ment_days >= 0)
+analysis_data <- select(analysis_data, c("id", "phys_days", "ment_days", "depress"))
 #Modify depress status for visualization
 analysis_data$depress <- as.character(analysis_data$depress)
 analysis_data <- mutate(analysis_data,
-                     depress = case_when(
+                       depress = case_when(
                        depress == "1" ~ "Yes",
                        depress == "2" ~ "No",
                        TRUE ~ depress
@@ -115,7 +117,7 @@ analysis_data <- mutate(analysis_data,
 # 4. Dataset for the relationship between Numbers of days of Mental un-wellness
 # and one's health status in general
 mentalVsHealth_data <- filter(GSS, ment_days >= 0) %>% filter(health >= 0)
-mentalVsHealth_data  <- select(mentalVsHealth_data,c("id","ment_days","health"))
+mentalVsHealth_data  <- select(mentalVsHealth_data, c("id", "ment_days", "health"))
 
 #### Save data ####
 write_parquet(GSS, here::here("data/analysis_data/cleaned_GSS.parquet"))

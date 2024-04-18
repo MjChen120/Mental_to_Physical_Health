@@ -253,6 +253,8 @@ The GSS's approach to managing non-responses underwent changes, notably in its r
 
 However, with the introduction of web-based surveys, new categories like "Skipped on Web" were introduced to categorize non-responses. This change raises questions about the comparability of data across years and the potential for increased non-response rates. Non-responses (@fig-nonresponse-rate) can significantly affect the analysis of physical and mental health status trends, particularly in capturing the full extent of respondents' health status. Furthermore, mental health is a later introduced science compared to physical health and thus is not included in most of the previous surveys. Although survey data lack mental health-related questions filtered out for analyses, it is important to consider that fact. 
 
+As shown in @fig-nonresponse-rate, some of the questions in the dataset are not included resulting in no responses collected in certain years due to the change in survey methodology. This fact requires extra attention when cleaning and handling since the number of available responses will decrease when additional variables are added. Hence, an additional sub-set of the data that only includes counted days of mental and physical un-wellness in the past 30 days (@tbl-sub-vars) is also included for only speculating these two variables while keeping as many responses as possible. 
+
 ```{r}
 #| label: fig-nonresponse-rate
 #| fig-cap: Nonresponse Rates - Responses for counted days of feeling physically unwell have the highest nonresponse rate
@@ -280,10 +282,6 @@ ggplot(non_response_data, aes(x = questions,y=non_response_rate)) +
 
 ```
 
-\break
-
-As shown in @fig-nonresponse-rate, some of the questions in the dataset are not included resulting in no responses collected in certain years due to the change in survey methodology. This fact requires extra attention when cleaning and handling since the number of available responses will decrease when additional variables are added. Hence, an additional sub-set of the data that only includes counted days of mental and physical un-wellness in the past 30 days (@tbl-sub-vars) is also included for only speculating these two variables while keeping as many responses as possible. 
-
 # Model
 
 Through the data analysis of the paper, a potential correlation between counted days of feeling mentally and physically unwell is detected. To further analyze and estimate counted days of feeling physically unwell based on an individual's counted days of feeling mentally unwell and whether they were diagnosed as depressive in the past, a linear regression analysis is conducted.
@@ -297,7 +295,8 @@ Define $y_i$ as the number of days that an individual felt physically unwell in 
 \begin{align} 
 y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
 \mu_i &= \beta_0 + \beta_1 days + \beta_2 diagnosis\\
-\beta &\sim \mbox{Normal}(0, 2.5) 
+\beta_i &\sim \mbox{Normal}(0, 2.5) \\
+\sigma &\sim \mbox{Exponential}(1)
 \end{align}
 
 We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`. Model justification and result will be explained later in this paper.
@@ -513,6 +512,8 @@ There are many limitations and weakness in the analysis. For instance, counted d
 
 Not enough education on mental health could also influence variables we collected, based on the fact that the variables are collected in a self-report manner. Participants might reported inaccurate information due to not having mental health related knowledge. On the other hand, the disparity in gender and other minority groups could influence the variable validity as those groups are more likely to be underrepresented in medical research. There is still much room of improvements. 
 
+Lastly, by posterior predictive check, the posterior distribution indicates that the model is not doing a good job of fitting the data. The check result could be due to limitations of data mentioned above; furthermore, adding more relevant variables to the linear regression equation could as well improve the strength of the model.
+
 With existing study and limitations, future studies could be conducted to improve and capture the relationship between mental and physical health more efficiently in the future.
 
 \newpage
@@ -565,9 +566,7 @@ With existing study and limitations, future studies could be conducted to improv
 
 ### Posterior predictive check
 
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
+In @fig-ppcheckandposteriorvsprior, we implement a posterior predictive check and compared the posterior with the prior. By definition, the posterior should be able to be used to simulate data similar to the actual data; however, the posterior simulated data barely recollect the characteristic of the dataset from GSS. This means that the model lack of strength in terms of the relationship. The weakness could be a result of data limitations mentioned in [Discussion]. 
 
 ```{r}
 #| eval: true
@@ -576,7 +575,7 @@ In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. Th
 #| warning: false
 #| label: fig-ppcheckandposteriorvsprior
 #| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
+#| fig-cap: "The Model Fits Barely to the Data, Hinting A Weak Model for Explaining the circumstances"
 #| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
 
 pp_check(first_model) +
@@ -592,9 +591,7 @@ posterior_vs_prior(first_model) +
 
 ### Diagnostics
 
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
+@fig-stanareyouokay-1 is a trace plot. It shows lines bouncing around horizontally and have a nice overlap between the chains. @fig-stanareyouokay-2 is a Rhat plot. From the plot, $\hat{R} = 1.05$, which is very close to 1, and ideally no more than 1.1.  These results suggest no problems in model we built for our paper.
 
 ```{r}
 #| echo: false
@@ -611,7 +608,9 @@ plot(first_model, "trace")
 plot(first_model, "rhat")
 ```
 
+
 \newpage
+\break
 
 # References
 

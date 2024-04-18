@@ -4,7 +4,7 @@
 # Date: 28 March 2024
 # Contact: mingjia.chen@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: R 
+# Pre-requisites: R
 
 
 #### Workspace setup ####
@@ -17,11 +17,11 @@ simulated_data <-
     year = runif(n = 1000, min = 1972, max = 2023) |> floor(),
     sex = runif(n = 1000, min = 1, max = 3) |> floor(),
     age = runif(n = 1000, min = 1, max = 100) |> floor(),
-    mental_health = runif(n = 1000,min = 0,max = 32) |> floor(),
-    physical_health = runif(n = 1000,min = 0,max = 32) |> floor(),
+    mental_health = runif(n = 1000, min = 0, max = 32) |> floor(),
+    physical_health = runif(n = 1000, min = 0, max = 32) |> floor(),
     depress = runif(n = 1000, min = 1, max = 3) |> floor(),
     health = runif(n = 1000, min = 1, max = 5) |> floor()
-)
+  )
 
 # expected that id is only from 1 to 1000
 # expected that year is only from 1972 to 2022
@@ -68,4 +68,3 @@ any(unique(simulated_data$depress) == c(1:2))
 max(simulated_data$health) <= 4
 min(simulated_data$health) >= 1
 any(unique(simulated_data$health) == c(1:4))
-

@@ -1,8 +1,8 @@
 #### Preamble ####
-# Purpose: Models created and prepared for studying whether reported days of mental unwellness in a month and being reported as having depression can have a impact on number of reported days of being physically unwell.
-# Author: Mingjia Chen 
-# Date: 31 March 2024 
-# Contact: mingjia.chen@mail.utoronto.ca 
+# Purpose: Models created and prepared for the analysis in paper.
+# Author: Mingjia Chen
+# Date: 31 March 2024
+# Contact: mingjia.chen@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: GSS.dct, GGS.dat, data_cleaning.R
 
@@ -13,7 +13,8 @@ library(rstanarm)
 library(arrow)
 
 #### Read data ####
-analysis_data <- read_parquet(here::here("data/analysis_data/analysis_data.parquet"))
+path <- "data/analysis_data/analysis_data.parquet"
+analysis_data <- read_parquet(here::here(path))
 
 ### Model data ####
 first_model <-
@@ -33,5 +34,3 @@ saveRDS(
   first_model,
   file = "models/first_model.rds"
 )
-
-

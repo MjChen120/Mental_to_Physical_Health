@@ -1,8 +1,8 @@
 #### Preamble ####
-# Purpose: Tests for the four dataset cleaned to make sure it is suitable for analyses for the paper
+# Purpose: Tests for the four dataset cleaned to make sure it is suitable for analyses
 # Author: Mingjia Chen
 # Date: 31 March 2024
-# Contact: mingjia.chen@mail.utoronto.ca 
+# Contact: mingjia.chen@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: GSS.dct, GGS.dat, data_cleaning.R
 
@@ -62,4 +62,3 @@ any(unique(depress_data$depress) == c(2:1))
 max(mentalVsHealth$health) <= 4
 min(mentalVsHealth$health) >= 1
 any(unique(mentalVsHealth$health) == c(1:4))
-
