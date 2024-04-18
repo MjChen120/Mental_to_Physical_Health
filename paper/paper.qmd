@@ -146,7 +146,7 @@ The survey queried participants with questions, such as "Now thinking about your
 
 ## Demographic Variables 
 
-Demographic variables such as gender and age are used to compare and contrast differences between population groups. To further analyze age, as showcased in @tbl-demo-overview, the continuous variable is categorized into cohorts "0-19", "20-39", "40-59", "60-79", and "80+". Below is an overview of the sub-dataset used for demographic analysis. In total, as shown in @tbl-demoportion, 72390 responses (with 51% from female respondents and 44% from age cohort 40 to 59) containing mentioned variables were collected.
+Demographic variables such as gender and age are used to compare and contrast differences between population groups. To further analyze age, as showcased in @tbl-demo-overview, the continuous variable is categorized into cohorts "0-19", "20-39", "40-59", "60-79", and "80+". Below is an overview of the sub-dataset used for demographic analysis. In total, as shown in @tbl-demoportion, 9049 responses (with 51% from female respondents and 44% from age cohort 40 to 59) containing mentioned variables were collected.
 
 ```{r}
 #| label: tbl-demo-overview
@@ -297,7 +297,7 @@ Define $y_i$ as the number of days that an individual felt physically unwell in 
 \begin{align} 
 y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
 \mu_i &= \beta_0 + \beta_1 days + \beta_2 diagnosis\\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
+\beta &\sim \mbox{Normal}(0, 2.5) 
 \end{align}
 
 We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`. Model justification and result will be explained later in this paper.
@@ -493,14 +493,27 @@ We find a positive correlation between mental and physical health, where depress
 
 ## Mental Health Issues Impact Physical Health {#sec-first-point}
 
+Corresponding to the results in the journal by @Ohrnberger_Fichera_Sutton, although not strong, the result of the paper supports the positive correlation between mental and physical health status ($\beta_1$ = 0.27, p = .01). The variables that are used for main analysis were only available in years 2002, 2006, 2010, 2014, 2018, and 2022 as mental health is a newly introduced concept in health science compared to physical health, hence the sample size (n = 9049) of our data may not accurately represent U.S. population in past decades. Moreover, mental health education may not be common, and even mistreated as a taboo, in the population at the time, causing individuals to dismiss mental discomfort. The correlation or impact thus could be strengthen by mental health promotions and educations in the future. 
+
+In addition, counted days of feeling physically and mentally unwell might not fully capture an individual's health status for analysis, more relevant factors should be included for future analysis. Due to that reason, a variable capturing respondents' general health status was included for supplementary evidence. A positive correlation between counted days of mental unwellness and general health (@fig-mental-vs-general) was detected to further support our estimand. To elaborate, since the categorical variable is coded reversely (i.e. Excellent - 1 and Poor - 4), we can conclude that as the number of counted mental unwellness increases, the health status of that individual correspondingly worsens.
+
 ## Influence by Depression Diagnosis
+
+To support our estimand, an additional variable was added to indicate the respondents' depression diagnosis. From the graph (@fig-mental-vs-physical) and model (@tbl-modelresults) results, depression diagnosis contributes to increase the influence of mental unwellness to physical unwellness. Depression diagnosis, therefore, could be a positive moderator, which strengthens the relation between mental health (independent variable) and physical health (dependent variable). Other than depression diagnosis, other mental health issues have not been specifically speculated for the purpose of this particular study.   
 
 ## Gender Disparity in Health
 
-By comparing counted days of feeling mentally and physically unwell between different gender groups, we found that female respondents in general reported higher numbers of occasions feeling unwell. The trend could be a result of gender disparity in medical field, where women benefit less from medical research and advances because they are underrepresented as potential patients. The gender disparity in medical research, compounded by pervasive misogyny, translates into tangible disadvantages for female patients in real-world scenarios. From the literature review conducted by @Merone_Tsey_Russell_Nagle_2022, women continue to be significantly underrepresented in medical literature, with inadequate reporting and analysis of sex and gender in research and misogynistic perceptions persistently shape the narrative surrounding these issues. The result in this paper again highlights the disparity, reminding us that We still have a long way to acknowledge and solve gender and minority disparity problems in the research field. 
+By comparing counted days of feeling mentally and physically unwell between different gender groups, we found that female respondents in general reported higher numbers of occasions feeling unwell (@fig-demo-mental and @fig-demo-physical). The trend could be a result of gender disparity in medical field, where women benefit less from medical research and advances because they are underrepresented as potential patients. The gender disparity in medical research, compounded by pervasive misogyny, translates into tangible disadvantages for female patients in real-world scenarios. 
+
+From the literature review conducted by @Merone_Tsey_Russell_Nagle_2022, women continue to be significantly underrepresented in medical literature, with inadequate reporting and analysis of sex and gender in research and misogynistic perceptions persistently shape the narrative surrounding these issues. The result in this paper again highlights the disparity, reminding us that We still have a long way to acknowledge and solve gender and minority disparity problems in the research field. 
 
 ## Weaknesses and Next Steps
 
+There are many limitations and weakness in the analysis. For instance, counted days of feeling physically and mentally unwell in past 30 days might not fully capture an individual's mental and physical health status; although feeling unwell in a few days, the severity of the unwellness was not measured. An individual could feel seriously unwell physically or mentally, which could as well contribute to a factor for analyzing. On the other hand, no other mental health issues other than depression was being studied in the paper; different kinds of mental health issues could contributes to physical unwellness in different ways, further research could include those variables for a better narrative of the relationship. 
+
+Not enough education on mental health could also influence variables we collected, based on the fact that the variables are collected in a self-report manner. Participants might reported inaccurate information due to not having mental health related knowledge. On the other hand, the disparity in gender and other minority groups could influence the variable validity as those groups are more likely to be underrepresented in medical research. There is still much room of improvements. 
+
+With existing study and limitations, future studies could be conducted to improve and capture the relationship between mental and physical health more efficiently in the future.
 
 \newpage
 
