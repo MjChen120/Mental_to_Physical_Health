@@ -20,7 +20,7 @@ bibliography: references.bib
 
 #download the packages if necessary, then load the packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(janitor,here,dplyr,tidyverse,knitr,kableExtra,ggplot2,arrow)
+pacman::p_load(janitor,here,dplyr,tidyverse,knitr,kableExtra,ggplot2,arrow,ggpmisc)
 
 library(janitor)
 library(tidyverse)
@@ -30,6 +30,7 @@ library(kableExtra)
 library(here)
 library(ggplot2)
 library(arrow)
+library(ggpmisc)
 
 
 #### Load data ####
@@ -43,13 +44,13 @@ mentalVsHealth <- read_parquet(here::here("data/analysis_data/mentalVsHealth_dat
 
 # Introduction {#sec-intro}
 
-Mental health is one essential aspect of the general health of an individual and yet it is often overlooked. Mental illnesses are not only “silent diseases” of one’s mind, but could as well impact patients’ physical well-being in general [@Ohrnberger_Fichera_Sutton]. This paper examines whether mental health-related and demographic factors impact the number of days an individual experiences physical unwellness in a month?
+Mental health is one essential aspect of the general health of an individual and yet it is often overlooked. Mental illnesses are not only “silent diseases” of one’s mind, but could as well impact patients’ physical well-being in general [@Ohrnberger_Fichera_Sutton]. This paper examines whether mental health-related and demographic factors impact the number of days an individual experiences physical unwellness in a month.
 
 The estimand of the paper is the difference in whether an individual could experience more occasions of feeling physically unwell if they have mental health unwellness versus not. This is considered in terms of those who were diagnosed as having depression by a doctor. U.S. General Social Survey (GSS) data from 1972 to 2022 is therefore used for this paper to examine whether the demographic and mental health-related factors as indicators of physical health conditions.
 
-The analysis of GSS data, including gender, age, and mental and physical health variables, seeks to provide detailed insights into how mental health issues impact physical unwellness, contributing to discussions on intersectionality (complex sociological analytically framework for studying social and political identities resulted from unique combinations of discrimination and privilege) and overlooked mental health in the medical field.
+The analysis of GSS data, including gender, age, and mental and physical health variables, seeks to provide detailed insights into how mental health issues impact physical unwellness, contributing to discussions on intersectionality (complex sociological analytical framework for studying social and political identities resulted from unique combinations of discrimination and privilege) and overlooked mental health in the medical field.
 
-Findings in paper highlight significance on gender, sex, and counted days of feeling mentally unwell in terms of counted days of feeling physically unwell in a month. The effect of whether being diagnosed as having depression on physical health unwellness is not significant ($\beta_2$ = −1.43, p = .22), thus whether depression diagnosis have effect on physical unwellness is not evidence supported. On the other hand, counted days of feeling mentally unwell has a positive significant on counted days of feeling physically unwell ($\beta_1$ = 0.27, p = .01). This means that if an individual has 1 more day of feeling unwell mentally, they in general will report 0.27 more days when reporting number of days they feel physically unwell.
+Findings in the paper highlight the significance of gender, sex, and counted days of feeling mentally unwell in terms of counted days of feeling physically unwell in a month. The effect of being diagnosed as having depression on physical health unwellness is not significant ($\beta_2$ = −1.43, p = .22), thus whether depression diagnosis affects physical unwellness is not evidence supported. On the other hand, counted days of feeling mentally unwell have a positive significance on counted days of feeling physically unwell ($\beta_1$ = 0.27, p = .01). This means that if an individual has 1 more day of feeling unwell mentally, they, in general, will report 0.27 more days when reporting the number of days they feel physically unwell.
 
 This paper begins with [Introduction] framing the impact of mental health on one's well-being. The [Data] section details variables, methodology, and analysis cleaning processes. In the [Model] section, a model is proposed for determining how an individual's depression status and counted days of mental unwellness in the past 30 days impact their counted days of physical unwellness in the past 30 days. [Results] section analyzes how demographic and other mental health-related factors would affect physical health with model calculations, leading the [Discussion] section with gender intersectionality and mental health issues often being overlooked in the medical field. Limitations and Future Research sections are included for study limitations and future research directions. The [Appendix] provides further survey information.
 
@@ -59,8 +60,7 @@ The paper uses data collected from the US General Social Survey (GSS) from NORIC
 
 ## Source Data
 
-Physical and mental health variables such as "health", "depress" status, and reported days of feeling physical ("physhlth") and health ("mntlhlth") unwell in a month are selected from GSS [@GSS] for main analysis. Variable "year" is chosen for checking data consistency and non-response rate over the years. Demographic data, specifically age and gender, were used as well for further analyses. The data was downloaded and filtered for the selected variables from the selected data variables from GSS[^1]. In total, 72390 responses (with 56% from female respondents) containing mentioned variables were collected. The data cleaning was performed based on value definitions as defined in the GSS codebooks [@gssCodebook]. The variable names are renamed to be more informative (@tbl-use-var).
-
+Physical and mental health variables such as "health", "depress" status, and reported days of feeling physical ("physhlth") and health ("mntlhlth") unwell in a month are selected from GSS [@GSS] for the main analysis. Variable "year" is chosen for checking data consistency and non-response rate over the years. Demographic data, specifically age and gender, were used as well for further analyses. The data was downloaded and filtered for the selected variables from the selected data variables from GSS[^1]. The data cleaning was performed based on value definitions as defined in the GSS codebooks [@gssCodebook]. The variable names are renamed to be more informative (@tbl-use-var).
 
 | Variable | New Name  | Description                   | Example |
 |----------|-----------|-------------------------------|---------|
@@ -76,30 +76,9 @@ Physical and mental health variables such as "health", "depress" status, and rep
 
 : Source data retrieved from GSS {#tbl-use-var}
 
-```{r}
-#| label: tbl-sex
-#| tbl-cap: Number of Responses from Each Gender Group
-#| echo: false
-#| warning: false
-#| message: false
-
-genderdata <- filter(GSS, sex == 2)
-
-sex <- c("Male","Female")
-numbers <- c(nrow(genderdata), nrow(GSS)-nrow(genderdata))
-female_per <- round(nrow(genderdata)/nrow(GSS),2) * 100
-
-gendertable <- cbind(sex,numbers)
-kable(gendertable, 
-      align = "c",
-      row.names = FALSE,
-      col.names = c("Sex","Responses"))
-
-```
-
 ## Data Cleaning
 
-The data was cleaned by using the open source statistically programming language R [@citeR], with libraries `tidyverse` [@tidyverse], `ggplot2` [@ggplot2], `dplyr` [@dplyr], `readr` [@readr], `tibble` [@tibble], `here` [@here], `kableExtra` [@kableExtra], `janitor` [@janitor], `arrow` [@arrow], and `knitr` [@knitr]. Below in @tbl-sub-vars contains a snapshot of the main dataset being used for the purpose of analysis.
+The data was cleaned by using the open source statistical programming language R [@citeR], with libraries `tidyverse` [@tidyverse], `ggplot2` [@ggplot2], `ggpmisc` [@ggpmisc], `dplyr` [@dplyr], `readr` [@readr], `tibble` [@tibble], `here` [@here], `kableExtra` [@kableExtra], `janitor` [@janitor], `arrow` [@arrow], and `knitr` [@knitr]. Below in @tbl-sub-vars contains a snapshot of the main dataset being used for the purpose of analysis; two additional histograms (@fig-countedDays) are included as well, illustrating number of responses for each question. In general, most respondents have only a few or zero days of feeling both physically and mentally unwell in the past 30 days. 
 
 [^1]: https://gss.norc.org/documents/stata/GSS_stata.zip
 
@@ -120,14 +99,41 @@ kable(head(days_data),
   kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
 ```
 
+
 ```{r}
 #| label: fig-countedDays
-#| tbl-cap: Number of Responses from Each Gender Group
+#| fig-cap: Histograms for Number of Responses for Each Question
+#| fig-subcap: ["Mental Unwellness","Physical Unwellness"]
+#| layout-ncol: 2
+#| tbl-cap: Number for Each Responses 
 #| echo: false
 #| warning: false
 #| message: false
 
+demo_data |>
+  ggplot(aes(x = ment_days)) +
+  geom_histogram(position = "dodge") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Days of Feeling Unwell Mentally in Last 30 days",
+    y = "Occurrences",
+    fill = "Sex"
+  )
+
+demo_data |>
+  ggplot(aes(x = phys_days)) +
+  geom_histogram(position = "dodge") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Days of Feeling Unwell Physically in Last 30 days",
+    y = "Occurrences",
+    fill = "Age Cohorts"
+  )
+
 ```
+
 ## Survey Methodology
 
 From 1992 until 2018, the General Social Survey (GSS) relied on face-to-face interviews to gather data. This method offered a robust data collection environment, allowing interviewers to delve deeper into responses and clarify any uncertainties. It provided an optimal means of gathering comprehensive data. However, in response to the COVID-19 Pandemic, between 2020 and 2021, the GSS transitioned primarily to web surveys for data collection.
@@ -136,11 +142,11 @@ The GSS targeted English or Spanish-speaking adults aged 18 and above residing i
 
 Changes in the GSS's respondent selection process, such as modifications to the Kish grid methodology, present additional hurdles, potentially skewing the demographic representation of respondents. The move towards web-based surveys may have inadvertently excluded older demographics, who are typically less inclined to engage with online platforms, thus impacting the survey's demographic balance. This demographic shift is significant, as older populations may offer distinct perspectives, particularly concerning mental health issues.
 
-The survey queried participants with the questions, such as "Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good?" and "Now thinking about your physical health, which includes physical illness and injury, for how many days during the past 30 days was your physical health not good?" and expecting a response of number of days in a month. Significantly, between 1998 and 2022, the structure of the questions have consistently remained the same. This consistency in formatting ensures the data's stability, facilitating a high level of consistency for thorough analysis. The data consists of a combination of in-person, telephone, and web surveys.
+The survey queried participants with questions, such as "Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good?" and "Now thinking about your physical health, which includes physical illness and injury, for how many days during the past 30 days was your physical health not good?" and expecting a response of the number of days in a month. Significantly, between 1998 and 2022, the structure of the questions has consistently remained the same. This consistency in formatting ensures the data's stability, facilitating a high level of consistency for thorough analysis. The data consists of a combination of in-person, telephone, and web surveys.
 
 ## Demographic Variables 
 
-Demographic variables such as gender and age are used to compare and contrast differences between population groups. To further analyze age, as showcased in @tbl-demo-overview, the continuous variable is categorized into cohorts "0-19","20-39","40-59","60-79", and "80+". Below attached an overview of the sub-dataset used for demographic analysis.
+Demographic variables such as gender and age are used to compare and contrast differences between population groups. To further analyze age, as showcased in @tbl-demo-overview, the continuous variable is categorized into cohorts "0-19", "20-39", "40-59", "60-79", and "80+". Below is an overview of the sub-dataset used for demographic analysis. In total, as shown in @tbl-demoportion, 72390 responses (with 51% from female respondents and 44% from age cohort 40 to 59) containing mentioned variables were collected.
 
 ```{r}
 #| label: tbl-demo-overview
@@ -159,9 +165,47 @@ kable(head(demo_data),
   kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
 ```
 
+\break
+
+```{r}
+#| label: tbl-demoportion
+#| tbl-cap: Number of Responses from Each Demographic Group
+#| tbl-subcap: 
+#|   - "Sex"
+#|   - "Age Cohorts"
+#| layout-ncol: 2
+#| echo: false
+#| warning: false
+#| message: false
+
+genderdata <- filter(demo_data, sex == "Female")
+
+sex <- c("Male","Female","Total")
+numbers <- c(nrow(genderdata), nrow(demo_data)-nrow(genderdata),nrow(demo_data))
+female_per <- round(nrow(genderdata)/nrow(demo_data),2) * 100
+
+gendertable <- cbind(sex,numbers)
+kable(gendertable, 
+      align = "c",
+      row.names = FALSE,
+      col.names = c("Sex","Responses"))
+
+
+agetable <- count(demo_data, age_cohort)
+total <- c("Total",nrow(demo_data))
+agetable <- rbind(agetable,total)
+kable(agetable, 
+      align = "c",
+      row.names = FALSE,
+      col.names = c("Age Cohort","Responses"))
+age_per <- round(nrow(filter(demo_data,age_cohort == "40-59"))/nrow(demo_data),2) * 100
+```
+
+\break
+
 ## Mental and Physical Unwellness and Depression Diagnosis
 
-One of the key variable used for further analysis is whether the respondent have been diagnosed as having depression by a doctor in the past. The survey used the question "Now I would like to ask you some questions about general health conditions. Has a doctor, nurse, or other health professional EVER told you that you had: D. Depression?" to collect a categorical response of "Yes" or "No". The variable is an external indication of respondents' mental health status, accompanying the main counted days variable that is used for the analysis (@tbl-analysis-vars).
+One of the key variables used for further analysis is whether the respondent has been diagnosed as having depression by a doctor in the past. The survey used the question "Now I would like to ask you some questions about general health conditions. Has a doctor, nurse, or other health professional EVER told you that you had: D. Depression?" to collect a categorical response of "Yes" or "No". The variable is an external indication of respondents' mental health status, accompanying the main counted days variable that is used for the analysis (@tbl-analysis-vars).
 
 ```{r}
 #| label: tbl-analysis-vars
@@ -182,7 +226,7 @@ kable(head(analysis_data),
 
 ## Mental Unwellness and General Health Status
 
-A variable collecting general health status is furthermore included for additional analyses (@tbl-health-vars). The variable is used as a supplementary tool indicating respondents' health in general to assist the analysis result. The question consists of four categorical responses by asking the respondents: "Would you say your own health, in general, is excellent, good, fair, or poor?" The respondants are expetced to choose one of the options to answer.
+A variable collecting general health status is furthermore included for additional analyses (@tbl-health-vars). The variable is used as a supplementary tool indicating respondents' health in general to assist the analysis result. The question consists of four categorical responses asking the respondents: "Would you say your own health, in general, is excellent, good, fair, or poor?" The respondents are expected to choose one of the options to answer.
 
 ```{r}
 #| label: tbl-health-vars
@@ -207,11 +251,11 @@ To mitigate non-responses in the survey, the GSS implemented a technique known a
 
 The GSS's approach to managing non-responses underwent changes, notably in its recent iterations – specifically during the COVID-19 Pandemic. As web surveys were used in the 2021 survey, modifications were made to balance non-responses. Historically, the survey employed subsampling techniques to mitigate the impact of non-responses, ensuring a representative dataset. 
 
-However, with the introduction of web-based surveys, new categories like "Skipped on Web" were introduced to categorize non-responses. This change raises questions about the comparability of data across years and the potential for increased non-response rates. Non-responses (@fig-nonresponse-rate) can significantly affect the analysis of physical and mental health status trends, particularly in capturing the full extent of respondents' health status. Furthermore, as mental health is a later introduced science compared to physical health and thus is not included in most of the previous surveys. Although survey data lack of mental health related questions is filtered out for analyses, it is important to take that fact into consideration. 
+However, with the introduction of web-based surveys, new categories like "Skipped on Web" were introduced to categorize non-responses. This change raises questions about the comparability of data across years and the potential for increased non-response rates. Non-responses (@fig-nonresponse-rate) can significantly affect the analysis of physical and mental health status trends, particularly in capturing the full extent of respondents' health status. Furthermore, mental health is a later introduced science compared to physical health and thus is not included in most of the previous surveys. Although survey data lack mental health-related questions filtered out for analyses, it is important to consider that fact. 
 
 ```{r}
 #| label: fig-nonresponse-rate
-#| fig-cap: Nonresponse Rates - Responses for counted days of feeling physical unwell has the highest nonresponse rate
+#| fig-cap: Nonresponse Rates - Responses for counted days of feeling physically unwell have the highest nonresponse rate
 #| echo: false
 #| warning: false
 #| message: false
@@ -236,18 +280,19 @@ ggplot(non_response_data, aes(x = questions,y=non_response_rate)) +
 
 ```
 
-As shown in @fig-nonresponse-rate, some of the questions in the dataset are not included resulting no responses collected in certain years due to the change in survey methodology. This fact requires extra attention when cleaning and handling since the number of available responses will decrease when additional variables are added. Hence, an additional sub set of the data that only includes counted days of mental and physical un-wellness in the past 30 days (@tbl-sub-vars) is also included for only speculating these two variables while keeping as many responses as possible. 
-
 \break
 
+As shown in @fig-nonresponse-rate, some of the questions in the dataset are not included resulting in no responses collected in certain years due to the change in survey methodology. This fact requires extra attention when cleaning and handling since the number of available responses will decrease when additional variables are added. Hence, an additional sub-set of the data that only includes counted days of mental and physical un-wellness in the past 30 days (@tbl-sub-vars) is also included for only speculating these two variables while keeping as many responses as possible. 
+
 # Model
-Through the data analysis of the paper, a potential correlation between counted days of feeling mental and physical unwell is detected. To further analyze and estimate counted days of feeling physical unwell based on an individuals counted days of feeling mentally unwell and whether they were diagnosed as depressive in the past, a linear regression analysis is conducted.
+
+Through the data analysis of the paper, a potential correlation between counted days of feeling mentally and physically unwell is detected. To further analyze and estimate counted days of feeling physically unwell based on an individual's counted days of feeling mentally unwell and whether they were diagnosed as depressive in the past, a linear regression analysis is conducted.
 
 Background details and diagnostics are included in [Appendix -@sec-model-details].
 
 ## Model set-up
 
-Define $y_i$ as the number of days that an individual feel physically unwell in the past 30 days. Then $\beta_1$ is coefficient for the number of days that this individual feel mentally unwell and $\beta_2$ indicates the coefficient of whether the individual is diagnosed as depressive by a doctor. $y_i$ and days are measured in days.  
+Define $y_i$ as the number of days that an individual felt physically unwell in the past 30 days. Then $\beta_1$ is the coefficient for the number of days that this individual felt mentally unwell and $\beta_2$ indicates the coefficient of whether the individual is diagnosed as depressive by a doctor. $y_i$ and days are measured in days.  
 
 \begin{align} 
 y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
@@ -255,20 +300,21 @@ y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
 \beta &\sim \mbox{Normal}(0, 2.5) \\
 \end{align}
 
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
+We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`. Model justification and result will be explained later in this paper.
 
 
-### Model justification
+## Model justification
 
-We anticipate that the counted days of feeling physical unwell would be closer to normal distribution, as different types of health-related factors would contribute to number of days people feeling unwell in a month; however, the relationship between days feeling unwell physically (dependent variable), days feeling unwell mentally (independent variable), and whether being diagnosed as having depression before (independent variable) is hypothesized to be linear. This is because we think feeling mentally unwell and having depression would contribute to higher possibility of feeling unwell physically, corresponding to our estimand. Due to the fact that these three questions were not included in all past surveys, only data that contains all three questions will be used for testifying the model. 
+We anticipate that the counted days of feeling physically unwell would be closer to a normal distribution, as different types of health-related factors would contribute to number of days people feeling unwell in a month; however, the relationship between days feeling unwell physically (dependent variable), days feeling unwell mentally (independent variable), and whether being diagnosed as having depression before (independent variable) is hypothesized to be linear. This is because we think feeling mentally unwell and having depression would contribute to a higher possibility of feeling unwell physically, corresponding to our estimand. Since these three questions were not included in all past surveys, only data that contains all three questions will be used for testifying the model. 
 
 # Results {#sec-results}
 
-## Differences Detected betwen Demographic Populations
+## Differences Detected between Demographic Populations
 
-To speculate possible demographic factors influencing days of feeling mental and physical unwell in a month, gender and sex are used. In general, female from 20 to 39 years old are more likely to report higher number of days feeling mentally unwell (@fig-demo-mental). In terms of physical health, female from 40 to 59 years old report higher number of days feeling unwell (@fig-demo-physical). 
+To speculate possible demographic factors influencing days of feeling mentally and physically unwell in a month, gender and sex are used. In general, females from 20 to 39 years old are more likely to report a higher number of days feeling mentally unwell (@fig-demo-mental). In terms of physical health, females from 40 to 59 years old report a higher number of days of feeling unwell (@fig-demo-physical). 
 
-As we can see, female in general report higher number of counted days of feeling both physical and mental unwellness in a month. The difference could be discrimination between gender groups, such as females usually being less represented in medical research. On the other hand, females are reported to be more sensitive to their mental health, that could be reason why they tend to have higher number of reports whether being mentally unwell.
+As we can see, females in general report a higher number of counted days of feeling both physically and mentally unwellness in a month. The difference could be discrimination between gender groups, such as females usually being less represented in medical research. On the other hand, females are reported to be more sensitive to their mental health, which could be the reason why they tend to have a higher number of reports of being mentally unwell.
+
 
 ```{r}
 #| echo: false
@@ -300,7 +346,6 @@ demo_data <- within(demo_data, {
 #| echo: false
 #| warning: false
 #| message: false
-
 
 demo_data |>
   ggplot(aes(x = ment_days, fill = sex)) +
@@ -360,11 +405,10 @@ demo_data |>
   )
 
 ```
-\break
 
 ## Mental Health and Health in General
 
-In addition to model and demographic analyses, an variable indicating respondents' general health was as well included for supplementary support of the paper. The general health variable is categorical, consisting four responses: "1" for Excellent, "2" for Good, "3" for Fair, and "4" for Poor. As shown in @fig-mental-vs-general, we can see that number of days feeling mentally unwell have a positive correlation with the general health status, meaning that if an individual has more days feeling mentally unwell, they are more likely to have poor general health as well. This result connects back to our estimand, supporting mental health's influence on one's physical health status.
+In addition to model and demographic analyses, a variable indicating respondents' general health was as well included for supplementary support of the paper. The general health variable is categorical, consisting of four responses: "1" for Excellent, "2" for Good, "3" for Fair, and "4" for Poor. As shown in @fig-mental-vs-general, we can see that the number of days feeling mentally unwell has a positive correlation with the general health status, meaning that if an individual has more days feeling mentally unwell, they are more likely to have poor general health as well. This result connects back to our estimand, supporting mental health's influence on one's physical health status.
 
 ```{r}
 #| label: fig-mental-vs-general
@@ -378,6 +422,8 @@ mentalVsHealth|>
   ggplot(aes(x = ment_days, y = health)) +
   geom_point() +
   geom_smooth(method = "lm") +
+  stat_poly_line() +
+  stat_poly_eq(use_label(c("eq", "R2"))) +
   theme_minimal() +
   labs(x = "Mental Unwellness", y = "General Health") +
   scale_color_brewer(palette = "Set1") +
@@ -385,11 +431,11 @@ mentalVsHealth|>
 ```
 \break
 
-## Depression Playing an Role
+## Depression Playing a Role
 
-With linear regression model analysis, result in @fig-mental-vs-physical shows that counted days of feeling mentally unwell is positively correlated to counted counted days of feeling physically unwell. The diagnosis of having depression has further positive effect on counted days of feeling physically unwell, making the correlation stronger. This result means that individuals with 1) higher counted days of feeling mentally unwell and 2) being diagnosed as having depression tend to report higher number of days feeling physically unwell. 
+With linear regression model analysis, the result in @fig-mental-vs-physical shows that counted days of feeling mentally unwell are positively correlated to counted days of feeling physically unwell. The diagnosis of depression has a further positive effect on counted days of feeling physically unwell, making the correlation stronger. This result means that individuals with 1) higher counted days of feeling mentally unwell and 2) being diagnosed as having depression tend to report a higher number of days feeling physically unwell. 
 
-Based on @tbl-modelresults, however, although having influences on linear equation in @@fig-mental-vs-physical, depression diagnosis's influences on counted days of feeling physically unwell is not significant ($\beta_2$ = −1.43, p = .22). Counted days of feeling mentally unwell, on the other hand, do have significant positive correlation with counted days of feeling physically unwell ($\beta_1$ = 0.27, p = .01). Even though one of the correlation is not significant, it is still important for us to take the variable into consideration for possible future research.
+Based on @tbl-modelresults, however, although having influences on linear equation in @fig-mental-vs-physical, depression diagnosis's influences on counted days of feeling physically unwell is not significant ($\beta_2$ = −1.43, p = .22). Counted days of feeling mentally unwell, on the other hand, do have a significant positive correlation with counted days of feeling physically unwell ($\beta_1$ = 0.27, p = .01). Even though one of the correlation is not significant, it is still important for us to consider the variable for possible future research.
 
 ```{r}
 #| label: fig-mental-vs-physical
@@ -398,12 +444,13 @@ Based on @tbl-modelresults, however, although having influences on linear equati
 #| warning: false
 #| message: false
 
-
 #Graph
 analysis_data|>
   ggplot(aes(x = ment_days, y = phys_days, color = depress)) +
   geom_point() +
   geom_smooth(method = "lm") +
+  stat_poly_line() +
+  stat_poly_eq(use_label(c("eq", "R2"))) +
   theme_minimal() +
   labs(x = "Mental Unwellness", y = "Physical Unwellness", color = "Depress") +
   scale_color_brewer(palette = "Set1") +
@@ -438,20 +485,22 @@ modelsummary::modelsummary(
 )
 ```
 
+\break 
 
 # Discussion {#sec-discussion}
 
-## First discussion point {#sec-first-point}
+We find a positive correlation between mental and physical health, where depression diagnosis strengthens the correlation; on the other hand, we detect a disparity between gender groups, hinting at an association with the fact that females are underrepresented in the medical field.
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+## Mental Health Issues Impact Physical Health {#sec-first-point}
 
-## Second discussion point
+## Influence by Depression Diagnosis
 
-## Third discussion point
+## Gender Disparity in Health
 
-## Weaknesses and next steps
+By comparing counted days of feeling mentally and physically unwell between different gender groups, we found that female respondents in general reported higher numbers of occasions feeling unwell. The trend could be a result of gender disparity in medical field, where women benefit less from medical research and advances because they are underrepresented as potential patients. The gender disparity in medical research, compounded by pervasive misogyny, translates into tangible disadvantages for female patients in real-world scenarios. From the literature review conducted by @Merone_Tsey_Russell_Nagle_2022, women continue to be significantly underrepresented in medical literature, with inadequate reporting and analysis of sex and gender in research and misogynistic perceptions persistently shape the narrative surrounding these issues. The result in this paper again highlights the disparity, reminding us that We still have a long way to acknowledge and solve gender and minority disparity problems in the research field. 
 
-Weaknesses and next steps should also be included.
+## Weaknesses and Next Steps
+
 
 \newpage
 
@@ -459,11 +508,49 @@ Weaknesses and next steps should also be included.
 
 # Appendix 
 
-## Additional data details
+## Survey Questions
 
-# Model details {#sec-model-details}
+\begin{enumerate}
+   \item What is your age group?
+   \begin{itemize}
+      \item Type in a Number
+      \item Not Applicable 
+   \end{itemize}
+   \item Please specify your gender:
+   \begin{enumerate}
+      \item Male
+      \item Female
+      \item Prefer not to say
+   \end{enumerate}
+   \item Would you say your own health, in general, is excellent, good, fair, or poor?
+   \begin{enumerate}
+      \item Excellent
+      \item Good
+      \item Fair
+      \item Poor
+      \item Not Applicable
+   \end{enumerate}
+   \item Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good?
+   \begin{itemize}
+      \item Type in a Number 
+      \item Not Applicable
+   \end{itemize}
+   \item Now thinking about your physical health, which includes physical illness and injury, for how many days during the past 30 days was your physical health not good?:
+   \begin{itemize}
+      \item Type in a Number 
+      \item Not Applicable
+   \end{itemize}
+   \item Now I would like to ask you some questions about general health conditions. Has a doctor, nurse, or other health professional EVER told you that you had Depression?
+   \begin{enumerate}
+      \item Yes
+      \item No
+      \item Not Applicable
+   \end{enumerate}
+\end{enumerate}
 
-## Posterior predictive check
+## Model details {#sec-model-details}
+
+### Posterior predictive check
 
 In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
 
@@ -490,7 +577,7 @@ posterior_vs_prior(first_model) +
   coord_flip()
 ```
 
-## Diagnostics
+### Diagnostics
 
 @fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
 
@@ -510,9 +597,6 @@ plot(first_model, "trace")
 
 plot(first_model, "rhat")
 ```
-
-\break
-
 
 \newpage
 
