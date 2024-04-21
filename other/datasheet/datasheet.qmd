@@ -1,54 +1,50 @@
 ---
-title: "Datasheet for 'A dataset'"
-subtitle: "My subtitle if needed"
+title: "Datasheet for U.S. General Social Survey (GSS) dataset"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
-date: "`r Sys.time()`"
-date-format: "D MMMM YYYY"
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+  - Mingjia Chen
+thanks: "Code and data are available at: https://github.com/MjChen120/Mental_to_Physical_Health.git."
+date: today
+date-format: long
 format: pdf
 number-sections: true
 bibliography: references.bib
 ---
 
-Extract of the questions from @gebru2021datasheets.
-
+For the purpose of this tutorial, the hypothetical datasheet is constructed based on the textbook by @rohan and questions are extracted from @gebru2021datasheets, using open source statistically programming language R [@citeR]. The General Social Survey (GSS) dataset [@GSS], initiated by NORC at the University of Chicago and primarily funded by the National Science Foundation, has been diligently tracking societal shifts and studying the increasing intricacies of American culture since 1972.
 
 **Motivation**
 
 1. *For what purpose was the dataset created? Was there a specific task in mind? Was there a specific gap that needed to be filled? Please provide a description.*
-    - The dataset was created to enable analysis of Australian politicians. We were unable to find a publicly available dataset in a structured format that had the biographical and political information on Australian politicians that was needed for modelling.
+    - The GSS stands as a vital national asset, publicly accessible and esteemed as one of the most extensively scrutinized repositories of data in the social sciences. NORC's commitment to broadening access to GSS data is exemplified through initiatives like the GSS Data Explorer, fostering utilization by legislators, policymakers, researchers, educators, and beyond.
 2. *Who created the dataset (for example, which team, research group) and on behalf of which entity (for example, company, institution, organization)?*
-    - TBD
+    - GSS is initiated by National Opinion Research Center (NORC) at the University of Chicago.
 3. *Who funded the creation of the dataset? If there is an associated grant, please provide the name of the grantor and the grant name and number.*
-    - TBD
+    - GSS is primarily funded by the National Science Foundation (NSF).
 4. *Any other comments?*
-    - TBD
+    - N/A
 
 **Composition**
 
 1. *What do the instances that comprise the dataset represent (for example, documents, photos, people, countries)? Are there multiple types of instances (for example, movies, users, and ratings; people and interactions between them; nodes and edges)? Please provide a description.*
-	- TBD
+	- Since 1972, the General Social Survey (GSS) has been conducting nationally representative surveys of adults in the United States. By gathering data on contemporary American society, the GSS aims to track and elucidate trends in opinions, attitudes, behaviors, social status, health status, and more. The GSS dataset focuses on collecting various data points from individuals to understand societal trends and patterns.
 2. *How many instances are there in total (of each type, if appropriate)?*
-	- TBD
+	- There are in general three types of instances in total: Likert scale, continuous, and categorical responses. The number of variables could not be listed here as GSS is a large social dataset, consisting of enorumous amount of variables.
 3. *Does the dataset contain all possible instances or is it a sample (not necessarily random) of instances from a larger set? If the dataset is a sample, then what is the larger set? Is the sample representative of the larger set (for example, geographic coverage)? If so, please describe how this representativeness was validated/verified. If it is not representative of the larger set, please describe why not (for example, to cover a more diverse range of instances, because instances were withheld or unavailable).*
-	- TBD
+	- The dataset used for the research paper only contains a few variables from the original GSS data (larger set). The original GSS dataset is representative of the population as it collects responses from a high percentage of population; although having some degree in non-responsive rate, the data in recent decades should be representative to the population as huge amount of responses were collected without biases. 
 4. *What data does each instance consist of? "Raw" data (for example, unprocessed text or images) or features? In either case, please provide a description.*
-	- TBD
+	- Each instances consist of raw data, where non-responses were transformed into number (for example, -100) that could be filtered out when analyzing. 
 5. *Is there a label or target associated with each instance? If so, please provide a description.*
-	- TBD
+	- Labels indicating the actual question asked and options offered to the respondents associated with each instance are included in the GSS Open Explorer for analysis purposes.
 6. *Is any information missing from individual instances? If so, please provide a description, explaining why this information is missing (for example, because it was unavailable). This does not include intentionally removed information, but might include, for example, redacted text.*
-	- TBD
+	- Some information are missing from individual instances, this usually happened due to respondents' non-responding to certain questions or withdraw the survey.
 7. *Are relationships between individual instances made explicit (for example, users' movie ratings, social network links)? If so, please describe how these relationships are made explicit.*
-	- TBD
+	- The number of counted days of felling mentally unwell and physically unwell in the past 30 days are made explicit, as we used linear regression analysis for evaluating the relationship between the numbers.
 8. *Are there recommended data splits (for example, training, development/validation, testing)? If so, please provide a description of these splits, explaining the rationale behind them.*
-	- TBD
+	- N/A
 9. *Are there any errors, sources of noise, or redundancies in the dataset? If so, please provide a description.*
-	- TBD
+	- Due to the fact that the survery is in a self-report manner, errors such as biases, noises, or redundancies could take place in the dataset. They are not speculated in this particular research paper.
 10. *Is the dataset self-contained, or does it link to or otherwise rely on external resources (for example, websites, tweets, other datasets)? If it links to or relies on external resources, a) are there guarantees that they will exist, and remain constant, over time; b) are there official archival versions of the complete dataset (that is, including the external resources as they existed at the time the dataset was created); c) are there any restrictions (for example, licenses, fees) associated with any of the external resources that might apply to a dataset consumer? Please provide descriptions of all external resources and any restrictions associated with them, as well as links or other access points, as appropriate.*
-	- TBD
+	- The dataset is extracted from GSS Open Explorer website; a) there is guarantees that they will exist, and remain constant, over time. 
 11. *Does the dataset contain data that might be considered confidential (for example, data that is protected by legal privilege or by doctor-patient confidentiality, data that includes the content of individuals' non-public communications)? If so, please provide a description.*
 	- TBD
 12. *Does the dataset contain data that, if viewed directly, might be offensive, insulting, threatening, or might otherwise cause anxiety? If so, please describe why.*
