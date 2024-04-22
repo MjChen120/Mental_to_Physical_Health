@@ -1,4 +1,4 @@
-# Mental Health Plays Significant Role in Physical Wellness in 1972 to 2022 US General Social Surveys
+# Mental Health Plays Significant Role in Physical Wellness From 1972 to 2022 US General Social Surveys
 Mental Illness Being Overlooked in the Medical Field with Gender Disparities
 
 ## Overview
