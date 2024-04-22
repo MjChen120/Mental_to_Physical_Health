@@ -43,11 +43,11 @@ mentalVsHealth <- read_parquet(here::here("data/analysis_data/mentalVsHealth_dat
 
 # Introduction {#sec-intro}
 
-Mental health is one essential aspect of the general health of an individual and yet it is often overlooked. Mental illnesses are not only “silent diseases” of one’s mind, but could as well impact patients’ physical well-being in general [@Ohrnberger_Fichera_Sutton]. This paper examines whether mental health-related and demographic factors impact the number of days an individual experiences physical unwellness in a month.
+Mental health is one essential aspect of the general health of an individual and yet it is often overlooked. Mental illnesses are not only “silent diseases” of one’s mind, but could as well impact patients’ physical well-being in general [@Ohrnberger_Fichera_Sutton]. Further research analyses should be conducted to benefit people's health with statistical information, thus it is important to speculate the relationship in depth. Even though previous research evidence supports the relationship between mental and physical health, larger representative samples and additional health-related variables were not used. To contribute to the topic, this paper examines whether mental health-related and demographic factors impact the number of days an individual experiences physical unwellness in a month by using the U.S. General Social Survey (GSS) dataset.
 
 The estimand of the paper is the difference in whether an individual could experience more occasions of feeling physically unwell if they have mental health unwellness versus not. This is considered in terms of those who were diagnosed as having depression by a doctor. U.S. General Social Survey (GSS) data from 1972 to 2022 is therefore used for this paper to examine whether the demographic and mental health-related factors as indicators of physical health conditions.
 
-The analysis of GSS data, including gender, age, and mental and physical health variables, seeks to provide detailed insights into how mental health issues impact physical unwellness, contributing to discussions on intersectionality (complex sociological analytical framework for studying social and political identities resulted from unique combinations of discrimination and privilege) and overlooked mental health in the medical field.
+The analysis of GSS data, including gender, age, and mental and physical health variables, seeks to provide detailed insights into how mental health issues impact physical unwellness, contributing to discussions on intersectionality (complex sociological analytical framework for studying social and political identities resulted from unique combinations of discrimination and privilege) and overlooked mental health in the medical field. The paper is essential to contribute to the narrative of the relationship between mental and physical health with the U.S. population dataset.
 
 Findings in the paper highlight the significance of gender, sex, and counted days of feeling mentally unwell in terms of counted days of feeling physically unwell in a month. The effect of being diagnosed as having depression on physical health unwellness is not significant ($\beta_2$ = −1.43, p = .22), thus whether depression diagnosis affects physical unwellness is not supported by evidence. On the other hand, counted days of feeling mentally unwell have a significant positive influence on counted days of feeling physically unwell ($\beta_1$ = 0.27, p = .01). This means that if an individual has 1 more day of feeling unwell mentally, they, in general, will report 0.27 more days when reporting the number of days they feel physically unwell.
 
@@ -55,7 +55,7 @@ This paper begins with [Introduction] framing the impact of mental health on one
 
 # Data {#sec-data}
 
-The paper uses data collected from the US General Social Survey (GSS) from NORIC at the University of Chicago [@GSS]. From the dataset, this paper focuses specifically on variables related to demographic backgrounds, mental health, and physical health, from 1992 to 2022. This longitudinal approach allows us to analyze whether an individual's demographic factors and mental health well-being could significantly contribute to their physical well-being.
+The paper uses data collected from the US General Social Survey (GSS) from the National Opinion Research Center (NORC) at the University of Chicago [@GSS]. From the dataset, this paper focuses specifically on variables related to demographic backgrounds, mental health, and physical health, from 1972 to 2022. This longitudinal approach allows us to analyze whether an individual's demographic factors and mental health well-being could significantly contribute to their physical well-being.
 
 ## Source Data
 
@@ -72,13 +72,13 @@ The source data was obtained from the public open website GSS Data Explorer[^1].
 | MNTLHLTH | ment_days | Days of Respondents' mental health being not good     | 20      |
 | DEPRESS  | depress   | Whether respondents have been told having depression  | Yes/1   |
 
-: Source data retrieved from GSS {#tbl-use-var}
+: Source data retrieved from GSS Data Explorer {#tbl-use-var}
 
 [^1]: https://gssdataexplorer.norc.org/home
 
 ## Data Cleaning
 
-The data was cleaned by using the open source statistical programming language R [@citeR], with libraries `tidyverse` [@tidyverse], `ggplot2` [@ggplot2], `ggpmisc` [@ggpmisc], `dplyr` [@dplyr], `readr` [@readr], `tibble` [@tibble], `here` [@here], `kableExtra` [@kableExtra], `janitor` [@janitor], `arrow` [@arrow], and `knitr` [@knitr]. Below in @tbl-sub-vars contains a snapshot of the main dataset being used for the purpose of analysis; two additional histograms (@fig-countedDays) are included as well, illustrating number of responses for each question. In general, most respondents have only a few or zero days of feeling both physically and mentally unwell in the past 30 days, indicating the population in general well in mental and physical health. 
+The explained data was cleaned by using the open source statistical programming language R [@citeR], with libraries `tidyverse` [@tidyverse], `ggplot2` [@ggplot2], `ggpmisc` [@ggpmisc], `dplyr` [@dplyr], `readr` [@readr], `tibble` [@tibble], `here` [@here], `kableExtra` [@kableExtra], `janitor` [@janitor], `arrow` [@arrow], and `knitr` [@knitr]. Below in @tbl-sub-vars contains a snapshot of the main dataset being used for analysis; two additional histograms (@fig-countedDays) are included as well, illustrating the number of responses for each question. In general, most respondents have only a few or zero days of feeling both physically and mentally unwell in the past 30 days, indicating the population is generally well in mental and physical health. Very few responses were collected that fall in the ranges between 15 days to 20 days, and above 20 days and below 30 days. Remarkably, on the other hand, there are a certain amount of responses reporting 30 days, indicating percentages of participants experiencing high levels of health discomfort. The trends are similar between the two responses.
 
 ```{r}
 #| label: tbl-sub-vars
@@ -134,17 +134,17 @@ demo_data |>
 
 ## Survey Methodology
 
-From 1992 until 2018, the General Social Survey (GSS) relied on face-to-face interviews to gather data. This method offered a robust data collection environment, allowing interviewers to delve deeper into responses and clarify any uncertainties. It provided an optimal means of gathering comprehensive data. However, in response to the COVID-19 Pandemic, between 2020 and 2021, the GSS transitioned primarily to web surveys for data collection.
+From 1972 until 2018, the General Social Survey (GSS) relied on face-to-face interviews to gather data. This method offered a robust data collection environment, allowing interviewers to delve deeper into responses and clarify any uncertainties. It provided an optimal means of gathering comprehensive data. However, in response to the COVID-19 Pandemic, between 2020 and 2021, the GSS transitioned primarily to web surveys for data collection.
 
 The GSS targeted English or Spanish-speaking adults aged 18 and above residing in US households [@GSS]. This inclusive criteria aimed to attract a diverse pool of participants. Nevertheless, individuals falling outside this target demographic were deemed ineligible for the survey. Those who didn't speak English or Spanish or had mental and/or physical impediments preventing survey participation were considered outside the scope of the GSS [@GSS].
 
 Changes in the GSS's respondent selection process, such as modifications to the Kish grid methodology, present additional hurdles, potentially skewing the demographic representation of respondents. The move towards web-based surveys may have inadvertently excluded older demographics, who are typically less inclined to engage with online platforms, thus impacting the survey's demographic balance. This demographic shift is significant, as older populations may offer distinct perspectives, particularly concerning mental health issues.
 
-The survey queried participants with questions, such as "Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good?" and "Now thinking about your physical health, which includes physical illness and injury, for how many days during the past 30 days was your physical health not good?" and expecting a response of the number of days in a month. Significantly, between 1998 and 2022, the structure of the questions has consistently remained the same. This consistency in formatting ensures the data's stability, facilitating a high level of consistency for thorough analysis. The data consists of a combination of in-person, telephone, and web surveys.
+The survey queried participants with questions, such as "Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good?" and "Now thinking about your physical health, which includes physical illness and injury, for how many days during the past 30 days was your physical health not good?" and expecting a response of the number of days in a month. The details of the questions used are listed in [Appendix -@sec-ques-details]. Significantly, between 1998 and 2022, the structure of the questions has consistently remained the same. This consistency in formatting ensures the data's stability, facilitating a high level of consistency for thorough analysis. The data consists of a combination of in-person, telephone, and web surveys.
 
 ## Demographic Variables 
 
-Demographic variables such as gender and age are used to compare and contrast differences between population groups. To further analyze age, as showcased in @tbl-demo-overview, the continuous variable is categorized into cohorts "0-19", "20-39", "40-59", "60-79", and "80+". Below is an overview of the sub-dataset used for demographic analysis. In total, as shown in @tbl-demoportion, 9049 responses (with 51% from female respondents and 44% from age cohort 40 to 59) containing mentioned variables were collected.
+Demographic variables such as gender and age are used to compare and contrast differences between population groups. To further analyze age, as showcased in @tbl-demo-overview, the continuous variable is modified to be categorized into cohorts "0-19", "20-39", "40-59", "60-79", and "80+". Below is an overview of the sub-dataset used for demographic analysis. In total, as shown in @tbl-demoportion, 9049 responses (with approximately 51% from female respondents and 44% from age cohort 40 to 59) containing mentioned variables were collected. Age cohort from 20 to 39 takes 43% of the responses; in other words, most respondents are from age 20 to 59 (87%).
 
 ```{r}
 #| label: tbl-demo-overview
@@ -203,7 +203,7 @@ age_per <- round(nrow(filter(demo_data,age_cohort == "40-59"))/nrow(demo_data),2
 
 ## Mental and Physical Unwellness and Depression Diagnosis
 
-One of the key variables used for further analysis is whether the respondent has been diagnosed as having depression by a doctor in the past. The survey used the question "Now I would like to ask you some questions about general health conditions. Has a doctor, nurse, or other health professional EVER told you that you had: D. Depression?" to collect a categorical response of "Yes" or "No". The variable is an external indication of respondents' mental health status, accompanying the main counted days variable that is used for the analysis (@tbl-analysis-vars).
+One of the key variables used for further analysis is whether the respondent has been diagnosed as having depression in the past. The survey used the question "Now I would like to ask you some questions about general health conditions. Has a doctor, nurse, or other health professional EVER told you that you had: D. Depression?" to collect a categorical response of whether "Yes" or "No". The variable is an external indication of respondents' mental health status, accompanying the main counted days variable that is used for the analysis (@tbl-analysis-vars). About 21% of the participants have been diagnosed as having depression in the past. According to the Morbidity and Mortality Weekly Report from Centers for Diseases Control and Prevention (CDC) in U.S.[@CDControlPrevention_2023], 18.4% of U.S. adults reported having ever been diagnosed with depression during 2020. The percentage in dataset is slightly higher than weekly reports, which could be a result from error, sampling differences, and other factors.
 
 ```{r}
 #| label: tbl-analysis-vars
@@ -220,6 +220,8 @@ kable(head(analysis_data),
       col.names = vars,
       row.names = FALSE) |>
   kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
+
+per <- round(count(filter(analysis_data,depress=="Yes")) / count(analysis_data), 2) * 100
 ```
 
 ## Mental Unwellness and General Health Status
@@ -520,7 +522,7 @@ With existing study and limitations, future studies could be conducted to improv
 
 # Appendix 
 
-## Survey Questions
+## Survey Questions {#sec-ques-details}
 
 \begin{enumerate}
    \item What is your age group?
