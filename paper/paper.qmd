@@ -80,9 +80,11 @@ The source data was obtained from the public open website GSS Data Explorer[^1].
 
 The explained data was cleaned by using the open source statistical programming language R [@citeR], with libraries `tidyverse` [@tidyverse], `ggplot2` [@ggplot2], `ggpmisc` [@ggpmisc], `dplyr` [@dplyr], `readr` [@readr], `tibble` [@tibble], `here` [@here], `kableExtra` [@kableExtra], `janitor` [@janitor], `arrow` [@arrow], and `knitr` [@knitr]. Below in @tbl-sub-vars contains a snapshot of the main dataset being used for analysis; two additional histograms (@fig-countedDays) are included as well, illustrating the number of responses for each question. In general, most respondents have only a few or zero days of feeling both physically and mentally unwell in the past 30 days, indicating the population is generally well in mental and physical health. Very few responses were collected that fall in the ranges between 15 days to 20 days, and above 20 days and below 30 days. Remarkably, on the other hand, there are a certain amount of responses reporting 30 days, indicating percentages of participants experiencing high levels of health discomfort. The trends are similar between the two responses.
 
+\break
+
 ```{r}
 #| label: tbl-sub-vars
-#| tbl-cap: Overview of the Mental and Physical Unwellness
+#| tbl-cap: Counted days of Mental unwellness with General Health Status
 #| echo: false
 #| warning: false
 #| message: false
@@ -90,7 +92,6 @@ The explained data was cleaned by using the open source statistical programming 
 vars <- c("ID","Physical Unwellness","Mental Unwellness")
 
 kable(head(days_data), 
-      caption = "Counted days of Mental unwellness with General Health Status", 
       align = "c",
       col.names = vars,
       row.names = FALSE) |>
@@ -140,7 +141,7 @@ The GSS targeted English or Spanish-speaking adults aged 18 and above residing i
 
 Changes in the GSS's respondent selection process, such as modifications to the Kish grid methodology, present additional hurdles, potentially skewing the demographic representation of respondents. The move towards web-based surveys may have inadvertently excluded older demographics, who are typically less inclined to engage with online platforms, thus impacting the survey's demographic balance. This demographic shift is significant, as older populations may offer distinct perspectives, particularly concerning mental health issues.
 
-The survey queried participants with questions, such as "Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good?" and "Now thinking about your physical health, which includes physical illness and injury, for how many days during the past 30 days was your physical health not good?" and expecting a response of the number of days in a month. The details of the questions used are listed in [Appendix -@sec-ques-details]. Significantly, between 1998 and 2022, the structure of the questions has consistently remained the same. This consistency in formatting ensures the data's stability, facilitating a high level of consistency for thorough analysis. The data consists of a combination of in-person, telephone, and web surveys.
+The survey queried participants with questions, such as "Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good?" and "Now thinking about your physical health, which includes physical illness and injury, for how many days during the past 30 days was your physical health not good?" and expecting a response of the number of days in a month. Further details of the questions used are listed in [Appendix -@sec-ques-details]. Significantly, between 1998 and 2022, the structure of the questions has consistently remained the same. This consistency in formatting ensures the data's stability, facilitating a high level of consistency for thorough analysis. The data consists of a combination of in-person, telephone, and web surveys.
 
 ## Demographic Variables 
 
@@ -148,7 +149,7 @@ Demographic variables such as gender and age are used to compare and contrast di
 
 ```{r}
 #| label: tbl-demo-overview
-#| tbl-cap: Overview of the Demographic Data 
+#| tbl-cap: Counted days of Physical and Mental unwellness of Population by Age and Gender Groups
 #| echo: false
 #| warning: false
 #| message: false
@@ -156,7 +157,6 @@ Demographic variables such as gender and age are used to compare and contrast di
 vars <- c("ID","Gender","Age","Physical Unwellness","Mental Unwellness","Age Cohort")
 
 kable(head(demo_data), 
-      caption = "Counted days of Physical and Mental unwellness of Population by Age and Gender Groups", 
       align = "c",
       col.names = vars,
       row.names = FALSE) |>
@@ -203,11 +203,11 @@ age_per <- round(nrow(filter(demo_data,age_cohort == "40-59"))/nrow(demo_data),2
 
 ## Mental and Physical Unwellness and Depression Diagnosis
 
-One of the key variables used for further analysis is whether the respondent has been diagnosed as having depression in the past. The survey used the question "Now I would like to ask you some questions about general health conditions. Has a doctor, nurse, or other health professional EVER told you that you had: D. Depression?" to collect a categorical response of whether "Yes" or "No". The variable is an external indication of respondents' mental health status, accompanying the main counted days variable that is used for the analysis (@tbl-analysis-vars). About 21% of the participants have been diagnosed as having depression in the past. According to the Morbidity and Mortality Weekly Report from Centers for Diseases Control and Prevention (CDC) in U.S.[@CDControlPrevention_2023], 18.4% of U.S. adults reported having ever been diagnosed with depression during 2020. The percentage in dataset is slightly higher than weekly reports, which could be a result from error, sampling differences, and other factors.
+One of the key variables used for further analysis is whether the respondent has been diagnosed as having depression in the past. The survey used the question "Now I would like to ask you some questions about general health conditions. Has a doctor, nurse, or other health professional EVER told you that you had: D. Depression?" to collect a categorical response of whether "Yes" or "No". The variable is an external indication of respondents' mental health status, accompanying the main counted days variable that is used for the analysis (@tbl-analysis-vars). From @tbl-analysis-depress, about 21% of the participants have been diagnosed as having depression in the past. According to the Morbidity and Mortality Weekly Report from Centers for Diseases Control and Prevention (CDC) in U.S.[@CDControlPrevention_2023], 18.4% of U.S. adults reported having ever been diagnosed with depression during 2020. The percentage in dataset is slightly higher than weekly reports, which could be a result from error, sampling differences, and other factors.
 
 ```{r}
 #| label: tbl-analysis-vars
-#| tbl-cap: Overview of the Main Analysis Dataset
+#| tbl-cap: Counted days of Physical and Mental unwellness with Depression Diagnosis
 #| echo: false
 #| warning: false
 #| message: false
@@ -215,18 +215,34 @@ One of the key variables used for further analysis is whether the respondent has
 vars <- c("ID","Physical Unwellness","Mental Unwellness","Depression Diagnosis")
 
 kable(head(analysis_data), 
-      caption = "Counted days of Physical and Mental unwellness with Depression Diagnosis", 
       align = "c",
       col.names = vars,
       row.names = FALSE) |>
   kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
 
 per <- round(count(filter(analysis_data,depress=="Yes")) / count(analysis_data), 2) * 100
+
+```
+\break
+```{r}
+#| label: tbl-analysis-depress
+#| tbl-cap: Distribution of Depression Diagnosis Responses
+#| echo: false
+#| warning: false
+#| message: false
+
+depresstable <- count(analysis_data, depress)
+total <- c("Total",nrow(analysis_data))
+depresstable <- rbind(depresstable ,total)
+kable(depresstable, 
+      align = "c",
+      row.names = FALSE,
+      col.names = c("Responses", "Occurrences"))
 ```
 
 ## Mental Unwellness and General Health Status
 
-A variable collecting general health status is furthermore included for additional analyses (@tbl-health-vars). The variable is used as a supplementary tool indicating respondents' health in general to assist the analysis result. The question consists of four categorical responses asking the respondents: "Would you say your own health, in general, is excellent, good, fair, or poor?" The respondents are expected to choose one of the options to answer.
+A variable collecting general health status is furthermore included for additional analyses (@tbl-health-vars). The variable is used as a supplementary tool indicating respondents' health in general to assist the analysis result. The question consists of four categorical responses asking the respondents: "Would you say your own health, in general, is excellent, good, fair, or poor?" The respondents are expected to choose one of the options to answer. In @tbl-health-rep, number of occurrences for each responses are counted. Majority of the repspondents reported to have good (51%) or excellent (29%) health status.
 
 ```{r}
 #| label: tbl-health-vars
@@ -235,14 +251,34 @@ A variable collecting general health status is furthermore included for addition
 #| warning: false
 #| message: false
 
-vars <- c("ID","Mental Unwellness","General Health")
+per_good <- round(nrow(filter(mentalVsHealth, health == 2))/nrow(mentalVsHealth),2) * 100
+per_exc <- round(nrow(filter(mentalVsHealth, health == 1))/nrow(mentalVsHealth),2) * 100
 
+vars <- c("ID","Mental Unwellness","General Health")
 kable(head(mentalVsHealth), 
-      caption = "Counted days of Mental unwellness with General Health Status", 
       align = "c",
       col.names = vars,
       row.names = FALSE) |>
   kable_styling(latex_options = c("striped", "hold_position"), bootstrap_options = "striped", full_width = FALSE)
+
+```
+
+```{r}
+#| label: tbl-health-rep
+#| tbl-cap: Distribution of General Health Responses
+#| echo: false
+#| warning: false
+#| message: false
+healthtable <- count(mentalVsHealth, health)
+total <- c("Total",nrow(mentalVsHealth))
+healthtable <- rbind(healthtable ,total)
+status <- data.frame(c("Excellent", "Good", "Fair", "Poor","Total"))
+colnames(status) <- c("Health Status")
+healthtable <- cbind(status, healthtable)
+kable(healthtable, 
+      align = "c",
+      row.names = FALSE,
+      col.names = c("Health Status", "Responses", "Occurrences"))
 ```
 
 ## Non-response Rate and Limitations
@@ -281,6 +317,7 @@ ggplot(non_response_data, aes(x = questions,y=non_response_rate)) +
   labs(x = "Questions", y = "Proportion of Non-Responses") 
 
 ```
+\break
 
 # Model
 
@@ -516,8 +553,6 @@ Lastly, by posterior predictive check, the posterior distribution indicates that
 
 With existing study and limitations, future studies could be conducted to improve and capture the relationship between mental and physical health more efficiently in the future.
 
-\newpage
-
 \appendix
 
 # Appendix 
@@ -588,7 +623,7 @@ posterior_vs_prior(first_model) +
   theme(legend.position = "bottom") +
   coord_flip()
 ```
-
+\break
 ### Diagnostics
 
 @fig-stanareyouokay-1 is a trace plot. It shows lines bouncing around horizontally and have a nice overlap between the chains. @fig-stanareyouokay-2 is a Rhat plot. From the plot, $\hat{R} = 1.05$, which is very close to 1, and ideally no more than 1.1.  These results suggest no problems in model we built for our paper.
@@ -599,7 +634,7 @@ posterior_vs_prior(first_model) +
 #| message: false
 #| warning: false
 #| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
+#| fig-cap: "The convergence of the MCMC algorithm is checked for the model."
 #| fig-subcap: ["Trace plot", "Rhat plot"]
 #| layout-ncol: 2
 
@@ -608,7 +643,9 @@ plot(first_model, "trace")
 plot(first_model, "rhat")
 ```
 
+   
 \newpage
+  
 
 # References
 
