@@ -64,7 +64,7 @@ max(simulated_data$depress) == 2
 min(simulated_data$depress) == 1
 any(unique(simulated_data$depress) == c(1:2))
 
-# expected that health is only between 1 to 4
+# expected that health is only between 1 to 4  
 max(simulated_data$health) <= 4
 min(simulated_data$health) >= 1
 any(unique(simulated_data$health) == c(1:4))

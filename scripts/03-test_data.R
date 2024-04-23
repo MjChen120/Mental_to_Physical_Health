@@ -2,7 +2,7 @@
 # Purpose: Tests for the four dataset cleaned to make sure it is suitable for analyses
 # Author: Mingjia Chen
 # Date: 31 March 2024
-# Contact: mingjia.chen@mail.utoronto.ca
+# Contact: mingjia.chen@mail.utoronto.ca 
 # License: MIT
 # Pre-requisites: GSS.dct, GGS.dat, data_cleaning.R
 

@@ -115,7 +115,7 @@ analysis_data <- mutate(analysis_data,
 )
 
 # 4. Dataset for the relationship between Numbers of days of Mental un-wellness
-# and one's health status in general
+# and one's health status in general  
 mentalVsHealth_data <- filter(GSS, ment_days >= 0) %>% filter(health >= 0)
 mentalVsHealth_data  <- select(mentalVsHealth_data, c("id", "ment_days", "health"))
 

@@ -2,7 +2,7 @@
 # Purpose: Models created and prepared for the analysis in paper.
 # Author: Mingjia Chen
 # Date: 31 March 2024
-# Contact: mingjia.chen@mail.utoronto.ca
+# Contact: mingjia.chen@mail.utoronto.ca 
 # License: MIT
 # Pre-requisites: GSS.dct, GGS.dat, data_cleaning.R
 
@@ -17,7 +17,7 @@ path <- "data/analysis_data/analysis_data.parquet"
 analysis_data <- read_parquet(here::here(path))
 
 ### Model data ####
-first_model <-
+model <-
   stan_glm(
     formula = phys_days ~ ment_days + depress,
     data = analysis_data,
@@ -31,6 +31,6 @@ first_model <-
 
 #### Save model ####
 saveRDS(
-  first_model,
-  file = "models/first_model.rds"
+  model,
+  file = "models/model.rds"
 )
