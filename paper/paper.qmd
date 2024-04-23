@@ -347,10 +347,9 @@ We anticipate that the counted days of feeling physically unwell would be closer
 
 ## Differences Detected between Demographic Populations
 
-To speculate possible demographic factors influencing days of feeling mentally and physically unwell in a month, gender and sex are used. In general, females from 20 to 39 years old are more likely to report a higher number of days feeling mentally unwell (@fig-demo-mental). In terms of physical health, females from 40 to 59 years old report a higher number of days of feeling unwell (@fig-demo-physical). 
+To speculate possible demographic factors influencing days of feeling mentally and physically unwell in a month, gender and sex are used. In general, most of the participants reported having less than 10 days of feeling unwell both mentally and physically. Throughout the responses except for 0 days, the occurrence of responses from female participants is higher than from male participants; this means that a larger percentage of female participants have experienced both mentally and physically unwell in the past 30 days. Age cohorts from 20 to 59 contribute to the majority of the occurrences for each response, which could be a result of the fact that the age cohort takes up to 87% of the dataset. In conclusion, females from 20 to 39 years old are more likely to report a higher number of days feeling mentally unwell (@fig-demo-mental). In terms of physical health, females from 40 to 59 years old report a higher number of days of feeling unwell (@fig-demo-physical). 
 
-As we can see, females in general report a higher number of counted days of feeling both physically and mentally unwellness in a month. The difference could be discrimination between gender groups, such as females usually being less represented in medical research. On the other hand, females are reported to be more sensitive to their mental health, which could be the reason why they tend to have a higher number of reports of being mentally unwell.
-
+As we can see, females in general report a higher number of counted days of feeling both physically and mentally unwellness in a month. The difference could be disparity occurring between gender groups, such as females usually being less represented in medical research. On the other hand, females are reported to be more sensitive to their mental health, which could be the reason why they tend to have a higher number of reports of being mentally unwell.
 
 ```{r}
 #| echo: false
@@ -406,7 +405,7 @@ demo_data |>
   )
 
 ```
-\break
+
 
 ```{r}
 #| label: fig-demo-physical
@@ -442,9 +441,14 @@ demo_data |>
 
 ```
 
+## Nonresponse Rate
+
+As we illustrated in @fig-nonresponse-rate, non-response rates may also help indicate significant differences in participants' attitudes toward each question included in the survey. Physical health-related questions have the highest non-response rate, indicating that most of the participants lack the motivation to time on speculate their physical health. On the other hand, the non-response rate for mental health and depression diagnosis is lower than for physical health questions. This difference between non-response rates could show that participants are more likely to pay attention when they are feeling mentally unwell and are more willing to answer questions corresponding to mental health. 
+
+
 ## Mental Health and Health in General
 
-In addition to model and demographic analyses, a variable indicating respondents' general health was as well included for supplementary support of the paper. The general health variable is categorical, consisting of four responses: "1" for Excellent, "2" for Good, "3" for Fair, and "4" for Poor. As shown in @fig-mental-vs-general, we can see that the number of days feeling mentally unwell has a positive correlation with the general health status, meaning that if an individual has more days feeling mentally unwell, they are more likely to have poor general health as well. This result connects back to our estimand, supporting mental health's influence on one's physical health status.
+In addition to model and demographic analyses, a variable indicating respondents' general health was also included for supplementary support of the paper. The general health variable is categorical, consisting of four responses: "1" for Excellent, "2" for Good, "3" for Fair, and "4" for Poor. As shown in @fig-mental-vs-general, we can see that the number of days feeling mentally unwell has a positive correlation with the general health status, meaning that if an individual has more days feeling mentally unwell, they are more likely to have poor general health as well. This result connects back to our estimand, supporting mental health's influence on one's physical health status. The relationship, however, is not strong ($\beta_1 =0.03$, $R^2 = 0.07$); this could be due to the fact that the health variable was not framed to be correlated to mental health. The variable may fail to associate with other health variables. 
 
 ```{r}
 #| label: fig-mental-vs-general
@@ -471,7 +475,7 @@ mentalVsHealth|>
 
 With linear regression model analysis, the result in @fig-mental-vs-physical shows that counted days of feeling mentally unwell are positively correlated to counted days of feeling physically unwell. The diagnosis of depression has a further positive effect on counted days of feeling physically unwell, making the correlation stronger. This result means that individuals with 1) higher counted days of feeling mentally unwell and 2) being diagnosed as having depression tend to report a higher number of days feeling physically unwell. 
 
-Based on @tbl-modelresults, however, although having influences on linear equation in @fig-mental-vs-physical, depression diagnosis's influences on counted days of feeling physically unwell is not significant ($\beta_2$ = −1.43, p = .22). Counted days of feeling mentally unwell, on the other hand, do have a significant positive correlation with counted days of feeling physically unwell ($\beta_1$ = 0.27, p = .01). Even though one of the correlation is not significant, it is still important for us to consider the variable for possible future research.
+Based on @tbl-modelresults, however, although having influences on linear equation in @fig-mental-vs-physical, depression diagnosis's influences on counted days of feeling physically unwell is not significant ($\beta_2$ = −1.43, p = .22). Counted days of feeling mentally unwell, on the other hand, do have a significant positive correlation with counted days of feeling physically unwell ($\beta_1$ = 0.27, p = .01). From @fig-mental-vs-physical, it is evident to state that depression diagnosis may be a moderator to strengthen the relationship between counted ays of mental and physical unwellness in the past 30 days. The lack of significance could be due to possible errors, validity of survey questions, biases, or other possible factors. Hence, even though one of the correlations is not significant, it is still important for us to consider the variable for possible future research.
 
 ```{r}
 #| label: fig-mental-vs-physical
@@ -543,13 +547,17 @@ By comparing counted days of feeling mentally and physically unwell between diff
 
 From the literature review conducted by @Merone_Tsey_Russell_Nagle_2022, women continue to be significantly underrepresented in medical literature, with inadequate reporting and analysis of sex and gender in research and misogynistic perceptions persistently shape the narrative surrounding these issues. The result in this paper again highlights the disparity, reminding us that We still have a long way to acknowledge and solve gender and minority disparity problems in the research field. 
 
-## Weaknesses and Next Steps
+## Weaknesses 
 
 There are many limitations and weakness in the analysis. For instance, counted days of feeling physically and mentally unwell in past 30 days might not fully capture an individual's mental and physical health status; although feeling unwell in a few days, the severity of the unwellness was not measured. An individual could feel seriously unwell physically or mentally, which could as well contribute to a factor for analyzing. On the other hand, no other mental health issues other than depression was being studied in the paper; different kinds of mental health issues could contributes to physical unwellness in different ways, further research could include those variables for a better narrative of the relationship. 
 
 Not enough education on mental health could also influence variables we collected, based on the fact that the variables are collected in a self-report manner. Participants might reported inaccurate information due to not having mental health related knowledge. On the other hand, the disparity in gender and other minority groups could influence the variable validity as those groups are more likely to be underrepresented in medical research. There is still much room of improvements. 
 
+### Model Limitations
+
 Lastly, by posterior predictive check, the posterior distribution indicates that the model is not doing a good job of fitting the data. The check result could be due to limitations of data mentioned above; furthermore, adding more relevant variables to the linear regression equation could as well improve the strength of the model.
+
+## Future Directions 
 
 With existing study and limitations, future studies could be conducted to improve and capture the relationship between mental and physical health more efficiently in the future.
 
