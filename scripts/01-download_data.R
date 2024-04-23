@@ -27,7 +27,8 @@
 
 # Once registered, you can access the datasets.
 # The GSS website provides a search and filter function to help you find specific datasets.
-# Select the variable names "YEAR","SEX","AGE","HEALTH","PHYSHLTH","MNTLHLTH","DEPRESS" for extracting.
+# Select the variable names "YEAR", "SEX", "AGE", "HEALTH", "PHYSHLTH", "MNTLHLTH", "DEPRESS" 
+# for extracting.
 
 
 # Step 4: Download the Data
@@ -37,5 +38,5 @@
 
 #### Save data ####
 
-# No further action is required for saving data
+# No further action is required to saving data
          
